@@ -190,6 +190,8 @@ func newConfigTab(controlWindow *controller.ControlWindow, toolState *ToolState)
 		})
 	}
 
-	// 自動的にモーション再生
-	toolState.Player.SetPlaying(true)
+	if toolState.Model != nil && toolState.Motion != nil && toolState.Motion.MaxFrame() > 0 {
+		// 自動的にモーション再生
+		toolState.Player.SetPlaying(true)
+	}
 }

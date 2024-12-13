@@ -12,6 +12,7 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/interface/controller"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller/widget"
 	"github.com/miu200521358/mlib_go/pkg/mutils/mconfig"
+	"github.com/miu200521358/walk/pkg/walk"
 )
 
 type ToolState struct {
@@ -91,6 +92,12 @@ func NewToolState(app *app.MApp, controlWindow *controller.ControlWindow) *ToolS
 	}
 
 	newConfigTab(controlWindow, toolState)
+
+	// 既存の設定を削除
+	controlWindow.Closing().Detach(0)
+	controlWindow.Closing().Attach(func(canceled *bool, reason walk.CloseReason) {
+		app.AppState().SetClosed(true)
+	})
 
 	return toolState
 }
