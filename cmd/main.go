@@ -5,19 +5,14 @@ package main
 
 import (
 	"embed"
-	"errors"
 	"fmt"
 	"log"
-	"os"
 	"runtime"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/miu200521358/mu_motion_viewer/pkg/ui"
 	"github.com/miu200521358/walk/pkg/walk"
 
-	"github.com/miu200521358/mlib_go/pkg/domain/pmx"
-	"github.com/miu200521358/mlib_go/pkg/domain/vmd"
-	"github.com/miu200521358/mlib_go/pkg/infrastructure/repository"
 	"github.com/miu200521358/mlib_go/pkg/interface/app"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller/widget"
@@ -54,35 +49,19 @@ func main() {
 	mApp.RunViewerToControlChannel()
 	mApp.RunControlToViewerChannel()
 
-	var model *pmx.PmxModel
-	if len(os.Args) > 1 {
-		modelPath := os.Args[1]
-		rep := repository.NewPmxRepository()
-		if isOk, err := rep.CanLoad(modelPath); isOk && err == nil {
-			if data, err := rep.Load(modelPath); err == nil {
-				model = data.(*pmx.PmxModel)
-			} else {
-				widget.RaiseError(err)
-			}
-		} else if err != nil {
-			widget.RaiseError(err)
-		} else {
-			widget.RaiseError(errors.New("unknown error"))
-		}
-	} else {
-		go func() {
-			// 操作ウィンドウは別スレッドで起動
-			controlWindow := controller.NewControlWindow(appConfig, mApp.ControlToViewerChannel(), ui.GetMenuItems, 1)
-			mApp.SetControlWindow(controlWindow)
+	go func() {
+		// 操作ウィンドウは別スレッドで起動
+		controlWindow := controller.NewControlWindow(appConfig, mApp.ControlToViewerChannel(), ui.GetMenuItems, 1)
+		mApp.SetControlWindow(controlWindow)
 
-			controlWindow.InitTabWidget()
+		controlWindow.InitTabWidget()
+		ui.NewToolState(mApp, controlWindow)
 
-			consoleView := widget.NewConsoleView(controlWindow.MainWindow, 256, 50)
-			log.SetOutput(consoleView)
+		consoleView := widget.NewConsoleView(controlWindow.MainWindow, 256, 50)
+		log.SetOutput(consoleView)
 
-			mApp.RunController()
-		}()
-	}
+		mApp.RunController()
+	}()
 
 	viewerWindow := viewer.NewViewWindow(
 		mApp.ViewerCount(), appConfig, mApp, mApp.ViewerToControlChannel(),
@@ -90,16 +69,6 @@ func main() {
 	viewerWindow.GetWindow().SetCloseCallback(func(w *glfw.Window) { mApp.AppState().SetClosed(true) })
 
 	mApp.AddViewWindow(viewerWindow)
-
-	mApp.SetFuncGetModels(func() [][]*pmx.PmxModel {
-		return [][]*pmx.PmxModel{{model}}
-	})
-
-	motion := vmd.NewVmdMotion("")
-
-	mApp.SetFuncGetMotions(func() [][]*vmd.VmdMotion {
-		return [][]*vmd.VmdMotion{{motion}}
-	})
 
 	mApp.Center()
 	mApp.RunViewer()
