@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"sort"
 	"strings"
 	"sync"
 
@@ -91,6 +92,26 @@ func newConfigTab(controlWindow *controller.ControlWindow, toolState *ToolState)
 				toolState.ModelPath = path
 				toolState.Model = result.model
 
+				// モデルを読み込みし直したら、ボーンの状態を更新する
+				toolState.ActiveExistBoneNames = make([]string, 0)
+				toolState.ActiveMissingBoneNames = make([]string, 0)
+
+				for _, boneName := range toolState.Motion.BoneFrames.Names() {
+					if toolState.Motion.BoneFrames.ContainsActive(boneName) {
+						if toolState.Model.Bones.ContainsByName(boneName) {
+							toolState.ActiveExistBoneNames = append(toolState.ActiveExistBoneNames, boneName)
+						} else {
+							toolState.ActiveMissingBoneNames = append(toolState.ActiveMissingBoneNames, boneName)
+						}
+					}
+				}
+
+				sort.Strings(toolState.ActiveExistBoneNames)
+				sort.Strings(toolState.ActiveMissingBoneNames)
+
+				toolState.NgBoneEdit.SetText(strings.Join(toolState.ActiveMissingBoneNames, "\r\n"))
+				toolState.OkBoneEdit.SetText(strings.Join(toolState.ActiveExistBoneNames, "\r\n"))
+
 				toolState.App.SetFuncGetModels(func() [][]*pmx.PmxModel {
 					return [][]*pmx.PmxModel{{toolState.Model}}
 				})
@@ -114,11 +135,11 @@ func newConfigTab(controlWindow *controller.ControlWindow, toolState *ToolState)
 		label.SetText(mi18n.T("NG使用ボーン"))
 
 		// NGボーン
-		ngBoneEdit, err := walk.NewTextEditWithStyle(composite, win.WS_VISIBLE|win.WS_VSCROLL|win.ES_MULTILINE|win.ES_READONLY)
+		toolState.NgBoneEdit, err = walk.NewTextEditWithStyle(composite, win.WS_VISIBLE|win.WS_VSCROLL|win.ES_MULTILINE|win.ES_READONLY)
 		if err != nil {
 			widget.RaiseError(err)
 		}
-		ngBoneEdit.SetText(strings.Join(toolState.ActiveMissingBoneNames, "\r\n"))
+		toolState.NgBoneEdit.SetText(strings.Join(toolState.ActiveMissingBoneNames, "\r\n"))
 	}
 
 	// OKボーン
@@ -133,11 +154,11 @@ func newConfigTab(controlWindow *controller.ControlWindow, toolState *ToolState)
 		label.SetText(mi18n.T("OK使用ボーン"))
 
 		// OKボーン
-		okBoneEdit, err := walk.NewTextEditWithStyle(composite, win.WS_VISIBLE|win.WS_VSCROLL|win.ES_MULTILINE|win.ES_READONLY)
+		toolState.OkBoneEdit, err = walk.NewTextEditWithStyle(composite, win.WS_VISIBLE|win.WS_VSCROLL|win.ES_MULTILINE|win.ES_READONLY)
 		if err != nil {
 			widget.RaiseError(err)
 		}
-		okBoneEdit.SetText(strings.Join(toolState.ActiveExistBoneNames, "\r\n"))
+		toolState.OkBoneEdit.SetText(strings.Join(toolState.ActiveExistBoneNames, "\r\n"))
 	}
 
 	// フッター

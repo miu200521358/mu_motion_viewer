@@ -21,6 +21,8 @@ type ToolState struct {
 	ConfigTab              *widget.MTabPage
 	PmxPicker              *widget.FilePicker
 	Player                 *widget.MotionPlayer
+	NgBoneEdit             *walk.TextEdit
+	OkBoneEdit             *walk.TextEdit
 	ModelPath              string
 	Model                  *pmx.PmxModel
 	Motion                 *vmd.VmdMotion
