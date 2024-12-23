@@ -205,9 +205,10 @@ func newConfigTab(controlWindow *controller.ControlWindow, toolState *ToolState)
 				return
 			}
 
-			widget.Beep()
+			mlog.IT(mi18n.T("保存成功"), mi18n.T("保存成功メッセージ",
+				map[string]interface{}{"Path": toolState.PmxPicker.GetPath()}))
 
-			toolState.App.SetClosed(true)
+			widget.Beep()
 		})
 	}
 
