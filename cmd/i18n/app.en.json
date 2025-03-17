@@ -1,11 +1,11 @@
 [
     {
-        "id": "&サンプルメニュー",
-        "translation": "&Sample Menu"
+        "id": "&使い方",
+        "translation": "&How to Use"
     },
     {
-        "id": "サンプルヘルプ",
-        "translation": "Sample help message\nSample help message\nSample help message\nSample help message\nSample help message"
+        "id": "使い方説明",
+        "translation": "If you associate the tool with the .vmd or .vpd file extension, you can launch the viewer by double-clicking the file.\nYou can also check for missing standard bones and morphs."
     },
     {
         "id": "ビューワー",
@@ -21,27 +21,23 @@
     },
     {
         "id": "設定保存",
-        "translation": "Save and Exit Settings"
+        "translation": "Save Model Settings"
     },
     {
-        "id": "Pmxファイル",
-        "translation": "PMX File for Display Check"
+        "id": "モデルファイル",
+        "translation": "Model File"
     },
     {
-        "id": "Pmxファイルを選択してください",
-        "translation": "・You can set a PMX model to apply when opening a motion file"
+        "id": "モデルファイルを選択してください",
+        "translation": "Please select a model file. Pmx or X files can be opened.\n・You can set the Pmx model to be applied when opening a motion.\n・Click the save button to save the model path and close the window."
     },
     {
-        "id": "Pmxファイルの使い方",
-        "translation": "・You can set a PMX model to apply when opening a motion file"
+        "id": "モーションファイル",
+        "translation": "Motion File"
     },
     {
-        "id": "表示用モデル設定",
-        "translation": "Save PMX File for Display Check"
-    },
-    {
-        "id": "表示用モデル設定説明",
-        "translation": "・You can set a PMX model to apply when opening a motion file\n・Click the save button to save the model path and close the window"
+        "id": "モーションファイルを選択してください",
+        "translation": "Please select a motion file.\nVmd or Vpd files can be opened."
     },
     {
         "id": "保存失敗",
@@ -49,26 +45,50 @@
     },
     {
         "id": "保存エラーメッセージ",
-        "translation": "Failed to save model settings\n\nError Message: {{.Error}}"
+        "translation": "Failed to save model settings.\n\nError message: {{.Error}}"
     },
     {
         "id": "保存失敗メッセージ",
-        "translation": "Failed to save model settings\nPlease check if the correct model path is specified\n\nModel Path: {{.Path}}"
+        "translation": "Failed to save model settings.\nPlease check if the correct model path is specified.\n\nModel path: {{.Path}}"
     },
     {
-        "id": "OK使用ボーン",
-        "translation": "【OK】Bones that exist in both the motion and the model"
+        "id": "OKボーン",
+        "translation": "[OK] Bone"
     },
     {
-        "id": "NG使用ボーン",
-        "translation": "【NG】Bones that exist in the motion but not in the model"
+        "id": "OKボーン説明",
+        "translation": "Bones that exist in both the motion and the model."
+    },
+    {
+        "id": "OKモーフ",
+        "translation": "[OK] Morph"
+    },
+    {
+        "id": "OKモーフ説明",
+        "translation": "Morphs that exist in both the motion and the model."
+    },
+    {
+        "id": "NGボーン",
+        "translation": "[NG] Bone"
+    },
+    {
+        "id": "NGボーン説明",
+        "translation": "Bones that exist in the motion but not in the model."
+    },
+    {
+        "id": "NGモーフ",
+        "translation": "[NG] Morph"
+    },
+    {
+        "id": "NGモーフ説明",
+        "translation": "Morphs that exist in the motion but not in the model."
     },
     {
         "id": "保存成功",
-        "translation": "Successfully saved settings"
+        "translation": "Successfully Saved Settings"
     },
     {
         "id": "保存成功メッセージ",
-        "translation": "Successfully saved model settings\nPlease close the window\nIf you have not yet set up file extension associations, please do so\n\nModel Path: {{.Path}}"
+        "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: {{.Path}}"
     }
 ]
