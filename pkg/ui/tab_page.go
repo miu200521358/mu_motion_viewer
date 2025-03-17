@@ -6,6 +6,7 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/domain/pmx"
 	"github.com/miu200521358/mlib_go/pkg/domain/vmd"
 	"github.com/miu200521358/mlib_go/pkg/infrastructure/repository"
+	"github.com/miu200521358/mlib_go/pkg/interface/app"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller/widget"
 	"github.com/miu200521358/mu_motion_viewer/pkg/usecase"
@@ -68,6 +69,8 @@ func NewTabPages(mWidgets *controller.MWidgets) []declarative.TabPage {
 		},
 	)
 
+	var saveButton *walk.PushButton
+
 	mWidgets.Widgets = append(mWidgets.Widgets, player, pmxLoadPicker, vmdLoadPicker)
 	mWidgets.SetOnLoaded(func() {
 		// 読み込みが完了したら、モデルのパスを設定
@@ -81,6 +84,7 @@ func NewTabPages(mWidgets *controller.MWidgets) []declarative.TabPage {
 		okMorphNamesListbox.SetEnabled(playing)
 		ngBoneNamesListbox.SetEnabled(playing)
 		ngMorphNamesListbox.SetEnabled(playing)
+		saveButton.SetEnabled(playing)
 	})
 
 	return []declarative.TabPage{
@@ -131,6 +135,22 @@ func NewTabPages(mWidgets *controller.MWidgets) []declarative.TabPage {
 								declarative.ListBox{
 									AssignTo: &ngMorphNamesListbox,
 								},
+							},
+						},
+						declarative.VSpacer{},
+						declarative.PushButton{
+							AssignTo: &saveButton,
+							Text:     mi18n.T("設定保存"),
+							OnClicked: func() {
+								if isOk := pmxLoadPicker.CanLoad(); !isOk {
+									mlog.ET(mi18n.T("保存失敗"), mi18n.T("保存失敗メッセージ",
+										map[string]interface{}{"Path": pmxLoadPicker.Path()}))
+								} else {
+									mlog.IT(mi18n.T("保存成功"), mi18n.T("保存成功メッセージ",
+										map[string]interface{}{"Path": pmxLoadPicker.Path()}))
+								}
+
+								app.Beep()
 							},
 						},
 						declarative.VSpacer{},
