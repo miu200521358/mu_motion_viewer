@@ -63,6 +63,8 @@ func NewTabPages(mWidgets *controller.MWidgets) []declarative.TabPage {
 				ngMorphNamesListbox.SetModel(ngMorphNames)
 
 				player.SetPlaying(true)
+				// フォーカスを当てる
+				cw.SetFocus()
 			} else {
 				mlog.ET(mi18n.T("読み込み失敗"), err.Error())
 			}
