@@ -14,7 +14,7 @@ import (
 	"github.com/miu200521358/walk/pkg/walk"
 )
 
-func NewTabPages(mWidgets *controller.MWidgets) []declarative.TabPage {
+func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 	var fileTab *walk.TabPage
 
 	player := widget.NewMotionPlayer()
@@ -89,76 +89,75 @@ func NewTabPages(mWidgets *controller.MWidgets) []declarative.TabPage {
 		saveButton.SetEnabled(playing)
 	})
 
-	return []declarative.TabPage{
-		{
-			Title:    mi18n.T("ファイル"),
-			AssignTo: &fileTab,
-			Layout:   declarative.VBox{},
-			Background: declarative.SystemColorBrush{
-				Color: walk.SysColorInactiveCaption,
-			},
-			Children: []declarative.Widget{
-				declarative.Composite{
-					Layout: declarative.VBox{},
-					Children: []declarative.Widget{
-						pmxLoadPicker.Widgets(),
-						vmdLoadPicker.Widgets(),
-						declarative.VSeparator{},
-						declarative.Composite{
-							Layout: declarative.Grid{
-								Columns: 2,
-							},
-							Children: []declarative.Widget{
-								declarative.Label{
-									Text:        mi18n.T("OKボーン"),
-									ToolTipText: mi18n.T("OKボーン説明"),
-								},
-								declarative.Label{
-									Text:        mi18n.T("OKモーフ"),
-									ToolTipText: mi18n.T("OKモーフ説明"),
-								},
-								declarative.ListBox{
-									AssignTo: &okBoneNamesListbox,
-								},
-								declarative.ListBox{
-									AssignTo: &okMorphNamesListbox,
-								},
-								declarative.Label{
-									Text:        mi18n.T("NGボーン"),
-									ToolTipText: mi18n.T("NGボーン説明"),
-								},
-								declarative.Label{
-									Text:        mi18n.T("NGモーフ"),
-									ToolTipText: mi18n.T("NGモーフ説明"),
-								},
-								declarative.ListBox{
-									AssignTo: &ngBoneNamesListbox,
-								},
-								declarative.ListBox{
-									AssignTo: &ngMorphNamesListbox,
-								},
-							},
-						},
-						declarative.VSpacer{},
-						declarative.PushButton{
-							AssignTo: &saveButton,
-							Text:     mi18n.T("設定保存"),
-							OnClicked: func() {
-								if isOk := pmxLoadPicker.CanLoad(); !isOk {
-									mlog.ET(mi18n.T("保存失敗"), mi18n.T("保存失敗メッセージ",
-										map[string]interface{}{"Path": pmxLoadPicker.Path()}))
-								} else {
-									mlog.IT(mi18n.T("保存成功"), mi18n.T("保存成功メッセージ",
-										map[string]interface{}{"Path": pmxLoadPicker.Path()}))
-								}
+	return declarative.TabPage{
 
-								app.Beep()
+		Title:    mi18n.T("ファイル"),
+		AssignTo: &fileTab,
+		Layout:   declarative.VBox{},
+		Background: declarative.SystemColorBrush{
+			Color: walk.SysColorInactiveCaption,
+		},
+		Children: []declarative.Widget{
+			declarative.Composite{
+				Layout: declarative.VBox{},
+				Children: []declarative.Widget{
+					pmxLoadPicker.Widgets(),
+					vmdLoadPicker.Widgets(),
+					declarative.VSeparator{},
+					declarative.Composite{
+						Layout: declarative.Grid{
+							Columns: 2,
+						},
+						Children: []declarative.Widget{
+							declarative.Label{
+								Text:        mi18n.T("OKボーン"),
+								ToolTipText: mi18n.T("OKボーン説明"),
+							},
+							declarative.Label{
+								Text:        mi18n.T("OKモーフ"),
+								ToolTipText: mi18n.T("OKモーフ説明"),
+							},
+							declarative.ListBox{
+								AssignTo: &okBoneNamesListbox,
+							},
+							declarative.ListBox{
+								AssignTo: &okMorphNamesListbox,
+							},
+							declarative.Label{
+								Text:        mi18n.T("NGボーン"),
+								ToolTipText: mi18n.T("NGボーン説明"),
+							},
+							declarative.Label{
+								Text:        mi18n.T("NGモーフ"),
+								ToolTipText: mi18n.T("NGモーフ説明"),
+							},
+							declarative.ListBox{
+								AssignTo: &ngBoneNamesListbox,
+							},
+							declarative.ListBox{
+								AssignTo: &ngMorphNamesListbox,
 							},
 						},
-						declarative.VSpacer{},
-						player.Widgets(),
-						declarative.VSpacer{},
 					},
+					declarative.VSpacer{},
+					declarative.PushButton{
+						AssignTo: &saveButton,
+						Text:     mi18n.T("設定保存"),
+						OnClicked: func() {
+							if isOk := pmxLoadPicker.CanLoad(); !isOk {
+								mlog.ET(mi18n.T("保存失敗"), mi18n.T("保存失敗メッセージ",
+									map[string]interface{}{"Path": pmxLoadPicker.Path()}))
+							} else {
+								mlog.IT(mi18n.T("保存成功"), mi18n.T("保存成功メッセージ",
+									map[string]interface{}{"Path": pmxLoadPicker.Path()}))
+							}
+
+							app.Beep()
+						},
+					},
+					declarative.VSpacer{},
+					player.Widgets(),
+					declarative.VSpacer{},
 				},
 			},
 		},
