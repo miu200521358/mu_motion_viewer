@@ -62,7 +62,10 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 				ngBoneNamesListbox.SetModel(ngBoneNames)
 				ngMorphNamesListbox.SetModel(ngMorphNames)
 
-				player.SetPlaying(true)
+				if !motion.IsVpd() {
+					// ポースじゃなければ再生
+					player.SetPlaying(true)
+				}
 				// フォーカスを当てる
 				cw.SetFocus()
 			} else {
@@ -82,10 +85,11 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 		}
 	})
 	mWidgets.SetOnChangePlaying(func(playing bool) {
-		okBoneNamesListbox.SetEnabled(playing)
-		okMorphNamesListbox.SetEnabled(playing)
-		ngBoneNamesListbox.SetEnabled(playing)
-		ngMorphNamesListbox.SetEnabled(playing)
+		// ボーン有無などはいつでも操作OK
+		okBoneNamesListbox.SetEnabled(true)
+		okMorphNamesListbox.SetEnabled(true)
+		ngBoneNamesListbox.SetEnabled(true)
+		ngMorphNamesListbox.SetEnabled(true)
 		saveButton.SetEnabled(playing)
 	})
 
