@@ -6,7 +6,6 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/domain/pmx"
 	"github.com/miu200521358/mlib_go/pkg/domain/vmd"
 	"github.com/miu200521358/mlib_go/pkg/infrastructure/repository"
-	"github.com/miu200521358/mlib_go/pkg/interface/app"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller/widget"
 	"github.com/miu200521358/mu_motion_viewer/pkg/usecase"
@@ -165,7 +164,7 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 									map[string]interface{}{"Path": pmxLoadPicker.Path()}))
 							}
 
-							app.Beep()
+							controller.Beep()
 						},
 					},
 					declarative.VSpacer{},
