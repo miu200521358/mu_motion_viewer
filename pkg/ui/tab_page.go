@@ -44,7 +44,7 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 				ngBoneNamesListbox.SetModel(ngBoneNames)
 				ngMorphNamesListbox.SetModel(ngMorphNames)
 			} else {
-				mlog.ET(mi18n.T("読み込み失敗"), err.Error())
+				mlog.ET(mi18n.T("読み込み失敗"), err, "")
 			}
 		},
 	)
@@ -78,7 +78,7 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 				// フォーカスを当てる
 				cw.SetFocus()
 			} else {
-				mlog.ET(mi18n.T("読み込み失敗"), err.Error())
+				mlog.ET(mi18n.T("読み込み失敗"), err, "")
 			}
 		},
 	)
@@ -157,11 +157,11 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 						Text:     mi18n.T("設定保存"),
 						OnClicked: func() {
 							if isOk := pmxLoadPicker.CanLoad(); !isOk {
-								mlog.ET(mi18n.T("保存失敗"), mi18n.T("保存失敗メッセージ",
-									map[string]interface{}{"Path": pmxLoadPicker.Path()}))
+								mlog.ET(mi18n.T("保存失敗"), nil, mi18n.T("保存失敗メッセージ",
+									map[string]any{"Path": pmxLoadPicker.Path()}))
 							} else {
 								mlog.IT(mi18n.T("保存成功"), mi18n.T("保存成功メッセージ",
-									map[string]interface{}{"Path": pmxLoadPicker.Path()}))
+									map[string]any{"Path": pmxLoadPicker.Path()}))
 							}
 
 							controller.Beep()
