@@ -93,7 +93,8 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 			vmdLoadPicker.SetPath(motionPath)
 		}
 	})
-	mWidgets.SetOnChangePlaying(func(playing bool) {
+
+	player.SetOnChangePlayingPre(func(playing bool) {
 		// ボーン有無などはいつでも操作OK
 		okBoneNamesListbox.SetEnabled(true)
 		okMorphNamesListbox.SetEnabled(true)
