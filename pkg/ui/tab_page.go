@@ -1,10 +1,13 @@
 package ui
 
 import (
+	"fmt"
+
 	"github.com/miu200521358/mlib_go/pkg/config/mi18n"
 	"github.com/miu200521358/mlib_go/pkg/config/mlog"
 	"github.com/miu200521358/mlib_go/pkg/domain/pmx"
 	"github.com/miu200521358/mlib_go/pkg/domain/vmd"
+	"github.com/miu200521358/mlib_go/pkg/infrastructure/mfile"
 	"github.com/miu200521358/mlib_go/pkg/infrastructure/repository"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller"
 	"github.com/miu200521358/mlib_go/pkg/interface/controller/widget"
@@ -49,6 +52,7 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 		},
 	)
 
+	var motion *vmd.VmdMotion
 	vmdLoadPicker := widget.NewVmdVpdLoadFilePicker(
 		"vmd",
 		mi18n.T("モーションファイル"),
@@ -60,7 +64,7 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 			}
 
 			if data, err := rep.Load(path); err == nil {
-				motion := data.(*vmd.VmdMotion)
+				motion = data.(*vmd.VmdMotion)
 				player.Reset(motion.MaxFrame())
 				cw.StoreMotion(0, 0, motion)
 
@@ -84,6 +88,7 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 	)
 
 	var saveButton *walk.PushButton
+	var noIkSaveButton *walk.PushButton
 
 	mWidgets.Widgets = append(mWidgets.Widgets, player, pmxLoadPicker, vmdLoadPicker)
 	mWidgets.SetOnLoaded(func() {
@@ -166,6 +171,28 @@ func NewTabPage(mWidgets *controller.MWidgets) declarative.TabPage {
 							}
 
 							controller.Beep()
+						},
+					},
+					declarative.PushButton{
+						AssignTo: &noIkSaveButton,
+						Text:     mi18n.T("IK・外部親なしモーション保存"),
+						OnClicked: func() {
+							vr := repository.NewVmdRepository(true)
+							if motion != nil {
+								// IKキーを空にして保存
+								motion.IkFrames = vmd.NewIkFrames()
+								dir, fileName, ext := mfile.SplitPath(motion.Path())
+								noIkPath := fmt.Sprintf("%s/%s_safe%s", dir, fileName, ext)
+								if err := vr.Save(noIkPath, motion, false); err != nil {
+									mlog.ET(mi18n.T("IK・外部親なし保存失敗"), nil, mi18n.T("IK・外部親なし保存失敗メッセージ",
+										map[string]any{"Path": noIkPath}))
+								} else {
+									mlog.IT(mi18n.T("IK・外部親なし保存成功"), mi18n.T("IK・外部親なし保存成功メッセージ",
+										map[string]any{"Path": noIkPath}))
+								}
+								controller.Beep()
+								return
+							}
 						},
 					},
 					declarative.VSpacer{},

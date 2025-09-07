@@ -90,5 +90,29 @@
     {
         "id": "保存成功メッセージ",
         "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: {{.Path}}"
+    },
+    {
+        "id": "IK・外部親なし保存失敗",
+        "translation": "Failed to save IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なし保存エラーメッセージ",
+        "translation": "Failed to save IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なし保存失敗メッセージ",
+        "translation": "Failed to save IK/No External Parent Motion\nPlease check if the correct motion path is specified\n\nMotion path: {{.Path}}"
+    },
+    {
+        "id": "IK・外部親なし保存成功",
+        "translation": "Successfully saved IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なし保存成功メッセージ",
+        "translation": "Successfully saved IK/No External Parent Motion\nPlease close the window\n\nMotion path: {{.Path}}"
+    },
+    {
+        "id": "IK・外部親なしモーション保存",
+        "translation": "Save IK/No External Parent Motion"
     }
 ]
