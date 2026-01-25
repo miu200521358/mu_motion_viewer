@@ -60,7 +60,6 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	state.saveModelButton = widget.NewMPushButton()
 	state.saveModelButton.SetLabel(translate(translator, ui_messages_labels.LabelSettingSave))
 	state.saveModelButton.SetTooltip(translate(translator, ui_messages_labels.LabelSettingSave))
-	state.saveModelButton.SetMinSize(declarative.Size{Width: 200, Height: 24})
 	state.saveModelButton.SetOnClicked(func(_ *controller.ControlWindow) {
 		state.saveModelSetting()
 	})
@@ -68,7 +67,6 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	state.saveSafeMotionButton = widget.NewMPushButton()
 	state.saveSafeMotionButton.SetLabel(translate(translator, ui_messages_labels.LabelSafeMotionSave))
 	state.saveSafeMotionButton.SetTooltip(translate(translator, ui_messages_labels.LabelSafeMotionSave))
-	state.saveSafeMotionButton.SetMinSize(declarative.Size{Width: 240, Height: 24})
 	state.saveSafeMotionButton.SetOnClicked(func(_ *controller.ControlWindow) {
 		state.saveSafeMotion()
 	})
