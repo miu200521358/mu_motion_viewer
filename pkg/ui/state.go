@@ -4,7 +4,6 @@
 package ui
 
 import (
-	"os"
 	"path/filepath"
 
 	"github.com/miu200521358/mlib_go/pkg/adapter/io_common"
@@ -71,7 +70,7 @@ func newMotionViewerState(translator i18n.II18n, logger logging.ILogger, userCon
 }
 
 // applyInitialPaths は初期パスをウィジェットに反映する。
-func (s *motionViewerState) applyInitialPaths() {
+func (s *motionViewerState) applyInitialPaths(initialMotionPath string) {
 	if s == nil {
 		return
 	}
@@ -81,8 +80,8 @@ func (s *motionViewerState) applyInitialPaths() {
 			s.modelPicker.SetPath(values[0])
 		}
 	}
-	if s.motionPicker != nil && len(os.Args) > 1 && os.Args[1] != "" {
-		s.motionPicker.SetPath(os.Args[1])
+	if s.motionPicker != nil && initialMotionPath != "" {
+		s.motionPicker.SetPath(initialMotionPath)
 	}
 }
 

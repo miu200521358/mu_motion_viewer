@@ -4,6 +4,7 @@
 package ui
 
 import (
+	"github.com/miu200521358/mlib_go/pkg/adapter/audio_api"
 	"github.com/miu200521358/mlib_go/pkg/infra/controller"
 	"github.com/miu200521358/mlib_go/pkg/infra/controller/widget"
 	"github.com/miu200521358/mlib_go/pkg/shared/base"
@@ -17,7 +18,7 @@ import (
 )
 
 // NewTabPages はmu_motion_viewer用のタブページを生成する。
-func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices) []declarative.TabPage {
+func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string) []declarative.TabPage {
 	var fileTab *walk.TabPage
 
 	var translator i18n.II18n
@@ -37,6 +38,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 	state := newMotionViewerState(translator, logger, userConfig)
 
 	state.player = widget.NewMotionPlayer(translator)
+	state.player.SetAudioPlayer(audio_api.NewAudioPlayer(), userConfig)
 
 	state.modelPicker = widget.NewPmxXLoadFilePicker(
 		userConfig,
@@ -71,7 +73,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 		state.saveSafeMotion()
 	})
 
-	listMinSize := declarative.Size{Width: 220, Height: 200}
+	listMinSize := declarative.Size{Width: 220, Height: 80}
 	state.okBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkBoneTip))
 	state.okBoneList.SetMinSize(listMinSize)
 	state.okBoneList.SetStretchFactor(1)
@@ -109,7 +111,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 					w.SetEnabledInPlaying(playing)
 				}
 			})
-			state.applyInitialPaths()
+			state.applyInitialPaths(initialMotionPath)
 		})
 	}
 
@@ -126,22 +128,13 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 				Children: []declarative.Widget{
 					state.modelPicker.Widgets(),
 					state.motionPicker.Widgets(),
-					declarative.VSeparator{},
-					declarative.Composite{
-						Layout: declarative.HBox{},
-						Children: []declarative.Widget{
-							state.saveModelButton.Widgets(),
-							declarative.HSpacer{},
-							state.saveSafeMotionButton.Widgets(),
-						},
-					},
-					declarative.VSeparator{},
-					state.player.Widgets(),
 				},
 			},
 			declarative.VSeparator{},
 			declarative.Composite{
-				Layout: declarative.HBox{},
+				Layout: declarative.Grid{
+					Columns: 2,
+				},
 				Children: []declarative.Widget{
 					buildListBoxColumn(
 						translate(translator, ui_messages_labels.LabelOkBone),
@@ -153,11 +146,6 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 						translate(translator, ui_messages_labels.LabelOkMorphTip),
 						state.okMorphList,
 					),
-				},
-			},
-			declarative.Composite{
-				Layout: declarative.HBox{},
-				Children: []declarative.Widget{
 					buildListBoxColumn(
 						translate(translator, ui_messages_labels.LabelNgBone),
 						translate(translator, ui_messages_labels.LabelNgBoneTip),
@@ -170,6 +158,16 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 					),
 				},
 			},
+			declarative.VSeparator{},
+			declarative.Composite{
+				Layout: declarative.VBox{},
+				Children: []declarative.Widget{
+					state.saveModelButton.Widgets(),
+					state.saveSafeMotionButton.Widgets(),
+				},
+			},
+			declarative.VSeparator{},
+			state.player.Widgets(),
 			declarative.VSpacer{},
 		},
 	}
@@ -178,14 +176,17 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices)
 }
 
 // NewTabPage はmu_motion_viewer用の単一タブを生成する。
-func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices) declarative.TabPage {
-	return NewTabPages(mWidgets, baseServices)[0]
+func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string) declarative.TabPage {
+	return NewTabPages(mWidgets, baseServices, initialMotionPath)[0]
 }
 
 // buildListBoxColumn はラベル付きのリスト表示を構成する。
 func buildListBoxColumn(label string, tooltip string, listBox *ListBoxWidget) declarative.Composite {
 	return declarative.Composite{
-		Layout:        declarative.VBox{},
+		Layout: declarative.VBox{
+			MarginsZero: true,
+			SpacingZero: true,
+		},
 		StretchFactor: 1,
 		Children: []declarative.Widget{
 			declarative.TextLabel{

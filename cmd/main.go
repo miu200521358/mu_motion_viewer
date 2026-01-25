@@ -6,7 +6,10 @@ package main
 import (
 	"embed"
 	"fmt"
+	"os"
+	"path/filepath"
 	"runtime"
+	"strings"
 
 	"github.com/go-gl/glfw/v3.3/glfw"
 	"github.com/miu200521358/walk/pkg/walk"
@@ -51,6 +54,7 @@ var appI18nFiles embed.FS
 // main はmu_motion_viewerを起動する。
 func main() {
 	viewerCount := 1
+	initialMotionPath := findInitialMotionPath(os.Args)
 
 	appConfig, loadErr := config.LoadAppConfig(appFiles)
 	if loadErr != nil {
@@ -121,7 +125,7 @@ func main() {
 				sharedState,
 				baseServices,
 				ui.NewMenuItems(baseServices.I18n(), baseServices.Logger()),
-				ui.NewTabPages(widgets, baseServices),
+				ui.NewTabPages(widgets, baseServices, initialMotionPath),
 				widths[0], heights[0], positionXs[0], positionYs[0], viewerCount,
 			)
 			if controlWindowErr != nil {
@@ -143,7 +147,7 @@ func main() {
 	}
 
 	defer app.SafeExecute(appConfig, func() {
-		for n := 0; n < viewerCount; n++ {
+		for n := range viewerCount {
 			idx := n + 1
 			if addWindowErr := viewerManager.AddWindow(
 				fmt.Sprintf("Viewer%d", idx),
@@ -156,4 +160,25 @@ func main() {
 		viewerManager.InitOverlay()
 		viewerManager.Run()
 	})
+}
+
+// findInitialMotionPath は起動引数からモーションパスを抽出する。
+func findInitialMotionPath(args []string) string {
+	if len(args) <= 1 {
+		return ""
+	}
+	for i := 1; i < len(args); i++ {
+		path := strings.TrimSpace(args[i])
+		path = strings.Trim(path, "\"")
+		path = strings.Trim(path, "'")
+		if path == "" {
+			continue
+		}
+		ext := strings.ToLower(filepath.Ext(path))
+		switch ext {
+		case ".vmd", ".vpd":
+			return path
+		}
+	}
+	return ""
 }
