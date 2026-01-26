@@ -114,5 +114,25 @@
     {
         "id": "IK・外部親なしモーション保存",
         "translation": "Save IK/No External Parent Motion"
+    },
+    {
+        "id": "OK/NG判定に失敗しました: %s",
+        "translation": "Failed to evaluate OK/NG: %s"
+    },
+    {
+        "id": "OKボーン一覧の更新に失敗しました: %s",
+        "translation": "Failed to update OK bone list: %s"
+    },
+    {
+        "id": "OKモーフ一覧の更新に失敗しました: %s",
+        "translation": "Failed to update OK morph list: %s"
+    },
+    {
+        "id": "NGボーン一覧の更新に失敗しました: %s",
+        "translation": "Failed to update NG bone list: %s"
+    },
+    {
+        "id": "NGモーフ一覧の更新に失敗しました: %s",
+        "translation": "Failed to update NG morph list: %s"
     }
 ]

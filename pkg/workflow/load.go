@@ -6,6 +6,7 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/adapter/io_common"
 	"github.com/miu200521358/mlib_go/pkg/domain/model"
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
+	"github.com/miu200521358/mlib_go/pkg/infra/base/i18n"
 )
 
 // LoadModel はモデルを読み込み、型を検証して返す。
@@ -14,7 +15,7 @@ func LoadModel(rep io_common.IFileReader, path string) (*model.PmxModel, error) 
 		return nil, nil
 	}
 	if rep == nil {
-		return nil, fmt.Errorf("モデル読み込みリポジトリがありません")
+		return nil, fmt.Errorf(i18n.T("モデル読み込みリポジトリがありません"))
 	}
 	data, err := rep.Load(path)
 	if err != nil {
@@ -22,7 +23,7 @@ func LoadModel(rep io_common.IFileReader, path string) (*model.PmxModel, error) 
 	}
 	modelData, ok := data.(*model.PmxModel)
 	if !ok {
-		return nil, fmt.Errorf("モデル形式が不正です")
+		return nil, fmt.Errorf(i18n.T("モデル形式が不正です"))
 	}
 	return modelData, nil
 }
@@ -33,7 +34,7 @@ func LoadMotion(rep io_common.IFileReader, path string) (*motion.VmdMotion, erro
 		return nil, nil
 	}
 	if rep == nil {
-		return nil, fmt.Errorf("モーション読み込みリポジトリがありません")
+		return nil, fmt.Errorf(i18n.T("モーション読み込みリポジトリがありません"))
 	}
 	data, err := rep.Load(path)
 	if err != nil {
@@ -41,7 +42,7 @@ func LoadMotion(rep io_common.IFileReader, path string) (*motion.VmdMotion, erro
 	}
 	motionData, ok := data.(*motion.VmdMotion)
 	if !ok {
-		return nil, fmt.Errorf("モーション形式が不正です")
+		return nil, fmt.Errorf(i18n.T("モーション形式が不正です"))
 	}
 	return motionData, nil
 }

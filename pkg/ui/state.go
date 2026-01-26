@@ -177,35 +177,35 @@ func (s *motionViewerState) updateCheckLists() {
 	result, err := usecase.CheckExists(s.modelData, s.motionData)
 	if err != nil {
 		if s.logger != nil {
-			s.logger.Error("OK/NG判定に失敗しました: %s", err.Error())
+			s.logger.Error(translate(s.translator, "OK/NG判定に失敗しました: %s"), err.Error())
 		}
 		return
 	}
 	if s.okBoneList != nil {
 		if err := s.okBoneList.SetItems(result.OkBones); err != nil {
 			if s.logger != nil {
-				s.logger.Error("OKボーン一覧の更新に失敗しました: %s", err.Error())
+				s.logger.Error(translate(s.translator, "OKボーン一覧の更新に失敗しました: %s"), err.Error())
 			}
 		}
 	}
 	if s.okMorphList != nil {
 		if err := s.okMorphList.SetItems(result.OkMorphs); err != nil {
 			if s.logger != nil {
-				s.logger.Error("OKモーフ一覧の更新に失敗しました: %s", err.Error())
+				s.logger.Error(translate(s.translator, "OKモーフ一覧の更新に失敗しました: %s"), err.Error())
 			}
 		}
 	}
 	if s.ngBoneList != nil {
 		if err := s.ngBoneList.SetItems(result.NgBones); err != nil {
 			if s.logger != nil {
-				s.logger.Error("NGボーン一覧の更新に失敗しました: %s", err.Error())
+				s.logger.Error(translate(s.translator, "NGボーン一覧の更新に失敗しました: %s"), err.Error())
 			}
 		}
 	}
 	if s.ngMorphList != nil {
 		if err := s.ngMorphList.SetItems(result.NgMorphs); err != nil {
 			if s.logger != nil {
-				s.logger.Error("NGモーフ一覧の更新に失敗しました: %s", err.Error())
+				s.logger.Error(translate(s.translator, "NGモーフ一覧の更新に失敗しました: %s"), err.Error())
 			}
 		}
 	}
