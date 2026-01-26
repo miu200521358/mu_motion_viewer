@@ -158,7 +158,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 			},
 			declarative.VSeparator{},
 			declarative.Composite{
-				Layout: declarative.VBox{},
+				Layout: declarative.HBox{},
 				Children: []declarative.Widget{
 					state.saveModelButton.Widgets(),
 					state.saveSafeMotionButton.Widgets(),

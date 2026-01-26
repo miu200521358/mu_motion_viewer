@@ -16,6 +16,8 @@ type ListBoxWidget struct {
 	minSize       declarative.Size
 	maxSize       declarative.Size
 	stretchFactor int
+	playing       bool
+	suppressClear bool
 }
 
 // NewListBoxWidget はListBoxWidgetを生成する。
@@ -44,7 +46,18 @@ func (lb *ListBoxWidget) SetWindow(_ *controller.ControlWindow) {
 
 // SetEnabledInPlaying は再生中の有効状態を設定する。
 func (lb *ListBoxWidget) SetEnabledInPlaying(playing bool) {
-	lb.SetEnabled(!playing)
+	if lb == nil {
+		return
+	}
+	lb.playing = playing
+	if lb.listBox == nil {
+		return
+	}
+	// 再生中でもスクロールできるように有効状態を維持する。
+	lb.listBox.SetEnabled(true)
+	if playing {
+		lb.clearSelection()
+	}
 }
 
 // SetEnabled はウィジェットの有効状態を設定する。
@@ -63,6 +76,22 @@ func (lb *ListBoxWidget) SetItems(items []string) error {
 	return lb.listBox.SetModel(items)
 }
 
+// clearSelection は再生中の選択を解除する。
+func (lb *ListBoxWidget) clearSelection() {
+	if lb == nil || lb.listBox == nil {
+		return
+	}
+	if lb.suppressClear {
+		return
+	}
+	if lb.listBox.CurrentIndex() < 0 {
+		return
+	}
+	lb.suppressClear = true
+	_ = lb.listBox.SetCurrentIndex(-1)
+	lb.suppressClear = false
+}
+
 // Widgets はUI構成を返す。
 func (lb *ListBoxWidget) Widgets() declarative.Composite {
 	return declarative.Composite{
@@ -74,6 +103,11 @@ func (lb *ListBoxWidget) Widgets() declarative.Composite {
 				MinSize:       lb.minSize,
 				MaxSize:       lb.maxSize,
 				StretchFactor: lb.stretchFactor,
+				OnCurrentIndexChanged: func() {
+					if lb.playing {
+						lb.clearSelection()
+					}
+				},
 			},
 		},
 	}
