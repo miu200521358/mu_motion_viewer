@@ -75,7 +75,7 @@ func (s *motionViewerState) applyInitialPaths(initialMotionPath string) {
 		return
 	}
 	if s.modelPicker != nil && s.userConfig != nil {
-		values, err := s.userConfig.GetStringSlice("pmx")
+		values, err := s.userConfig.GetStringSlice(config.UserConfigKeyPmxHistory)
 		if err == nil && len(values) > 0 {
 			s.modelPicker.SetPath(values[0])
 		}
@@ -101,7 +101,7 @@ func (s *motionViewerState) handleModelPathChanged(cw *controller.ControlWindow,
 
 	modelData, err := usecase.LoadModel(repo, path)
 	if err != nil {
-		logErrorWithTitle(s.logger, translate(s.translator, "読み込み失敗"), err)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), err)
 		s.modelData = nil
 		if cw != nil {
 			cw.SetModel(motionViewerWindowIndex, motionViewerModelIndex, nil)
@@ -133,7 +133,7 @@ func (s *motionViewerState) handleMotionPathChanged(cw *controller.ControlWindow
 
 	motionData, err := usecase.LoadMotion(repo, path)
 	if err != nil {
-		logErrorWithTitle(s.logger, translate(s.translator, "読み込み失敗"), err)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), err)
 		s.motionData = nil
 		if cw != nil {
 			cw.SetMotion(motionViewerWindowIndex, motionViewerModelIndex, nil)
@@ -218,7 +218,7 @@ func (s *motionViewerState) saveModelSetting() {
 	}
 	path := s.modelPath
 	if path == "" || s.modelRepo == nil || !s.modelRepo.CanLoad(path) {
-		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSaveFailure), nil)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSaveFailure), nil)
 		logInfoLine(s.logger, ui_messages_labels.LogSaveFailureDetail, path)
 		controller.Beep()
 		return
@@ -242,7 +242,7 @@ func (s *motionViewerState) saveSafeMotion() {
 		basePath = s.motionPath
 	}
 	if basePath == "" {
-		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
 		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
@@ -250,13 +250,13 @@ func (s *motionViewerState) saveSafeMotion() {
 
 	safeMotion, err := usecase.BuildSafeMotion(s.motionData)
 	if err != nil {
-		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
 		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
 	if safeMotion == nil {
-		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
 		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
@@ -264,13 +264,13 @@ func (s *motionViewerState) saveSafeMotion() {
 
 	safePath := s.buildSafeMotionPath(basePath)
 	if safePath == "" {
-		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
 		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
 	if err := s.vmdRepo.Save(safePath, safeMotion, io_common.SaveOptions{}); err != nil {
-		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
 		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, safePath)
 		controller.Beep()
 		return

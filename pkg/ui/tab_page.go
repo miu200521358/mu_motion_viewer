@@ -43,48 +43,48 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	state.modelPicker = widget.NewPmxPmdXLoadFilePicker(
 		userConfig,
 		translator,
-		"pmx",
-		translate(translator, ui_messages_labels.LabelModelFile),
-		translate(translator, ui_messages_labels.LabelModelFileTip),
+		config.UserConfigKeyPmxHistory,
+		i18n.TranslateOrMark(translator, ui_messages_labels.LabelModelFile),
+		i18n.TranslateOrMark(translator, ui_messages_labels.LabelModelFileTip),
 		state.handleModelPathChanged,
 	)
 	state.motionPicker = widget.NewVmdVpdLoadFilePicker(
 		userConfig,
 		translator,
-		"vmd",
-		translate(translator, ui_messages_labels.LabelMotionFile),
-		translate(translator, ui_messages_labels.LabelMotionFileTip),
+		config.UserConfigKeyVmdHistory,
+		i18n.TranslateOrMark(translator, ui_messages_labels.LabelMotionFile),
+		i18n.TranslateOrMark(translator, ui_messages_labels.LabelMotionFileTip),
 		state.handleMotionPathChanged,
 	)
 
 	state.saveModelButton = widget.NewMPushButton()
-	state.saveModelButton.SetLabel(translate(translator, ui_messages_labels.LabelSettingSave))
-	state.saveModelButton.SetTooltip(translate(translator, ui_messages_labels.LabelSettingSave))
+	state.saveModelButton.SetLabel(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSettingSave))
+	state.saveModelButton.SetTooltip(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSettingSave))
 	state.saveModelButton.SetOnClicked(func(_ *controller.ControlWindow) {
 		state.saveModelSetting()
 	})
 
 	state.saveSafeMotionButton = widget.NewMPushButton()
-	state.saveSafeMotionButton.SetLabel(translate(translator, ui_messages_labels.LabelSafeMotionSave))
-	state.saveSafeMotionButton.SetTooltip(translate(translator, ui_messages_labels.LabelSafeMotionSave))
+	state.saveSafeMotionButton.SetLabel(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSafeMotionSave))
+	state.saveSafeMotionButton.SetTooltip(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSafeMotionSave))
 	state.saveSafeMotionButton.SetOnClicked(func(_ *controller.ControlWindow) {
 		state.saveSafeMotion()
 	})
 
 	listMinSize := declarative.Size{Width: 220, Height: 80}
-	state.okBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkBoneTip), logger)
+	state.okBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkBoneTip), logger)
 	state.okBoneList.SetMinSize(listMinSize)
 	state.okBoneList.SetStretchFactor(1)
 
-	state.okMorphList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkMorphTip), logger)
+	state.okMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkMorphTip), logger)
 	state.okMorphList.SetMinSize(listMinSize)
 	state.okMorphList.SetStretchFactor(1)
 
-	state.ngBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelNgBoneTip), logger)
+	state.ngBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgBoneTip), logger)
 	state.ngBoneList.SetMinSize(listMinSize)
 	state.ngBoneList.SetStretchFactor(1)
 
-	state.ngMorphList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelNgMorphTip), logger)
+	state.ngMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgMorphTip), logger)
 	state.ngMorphList.SetMinSize(listMinSize)
 	state.ngMorphList.SetStretchFactor(1)
 
@@ -114,7 +114,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	}
 
 	fileTabPage := declarative.TabPage{
-		Title:    translate(translator, ui_messages_labels.LabelFile),
+		Title:    i18n.TranslateOrMark(translator, ui_messages_labels.LabelFile),
 		AssignTo: &fileTab,
 		Layout:   declarative.VBox{},
 		Background: declarative.SolidColorBrush{
@@ -135,23 +135,23 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 				},
 				Children: []declarative.Widget{
 					buildListBoxColumn(
-						translate(translator, ui_messages_labels.LabelOkBone),
-						translate(translator, ui_messages_labels.LabelOkBoneTip),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkBone),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkBoneTip),
 						state.okBoneList,
 					),
 					buildListBoxColumn(
-						translate(translator, ui_messages_labels.LabelOkMorph),
-						translate(translator, ui_messages_labels.LabelOkMorphTip),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkMorph),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkMorphTip),
 						state.okMorphList,
 					),
 					buildListBoxColumn(
-						translate(translator, ui_messages_labels.LabelNgBone),
-						translate(translator, ui_messages_labels.LabelNgBoneTip),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgBone),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgBoneTip),
 						state.ngBoneList,
 					),
 					buildListBoxColumn(
-						translate(translator, ui_messages_labels.LabelNgMorph),
-						translate(translator, ui_messages_labels.LabelNgMorphTip),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgMorph),
+						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgMorphTip),
 						state.ngMorphList,
 					),
 				},

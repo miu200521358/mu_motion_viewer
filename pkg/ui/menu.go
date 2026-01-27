@@ -15,7 +15,7 @@ import (
 func NewMenuItems(translator i18n.II18n, logger logging.ILogger) []declarative.MenuItem {
 	return []declarative.MenuItem{
 		declarative.Action{
-			Text: translate(translator, ui_messages_labels.HelpUsage),
+			Text: i18n.TranslateOrMark(translator, ui_messages_labels.HelpUsage),
 			OnTriggered: func() {
 				logInfoLine(logger, ui_messages_labels.HelpUsage)
 			},

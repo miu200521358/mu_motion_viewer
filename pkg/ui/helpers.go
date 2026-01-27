@@ -4,17 +4,8 @@
 package ui
 
 import (
-	"github.com/miu200521358/mlib_go/pkg/shared/base/i18n"
 	"github.com/miu200521358/mlib_go/pkg/shared/base/logging"
 )
-
-// translate は翻訳済み文言を返す。
-func translate(translator i18n.II18n, key string) string {
-	if translator == nil || !translator.IsReady() {
-		return "●●" + key + "●●"
-	}
-	return translator.T(key)
-}
 
 // logInfoLine は情報ログを1行として出力する。
 func logInfoLine(logger logging.ILogger, message string, params ...any) {
