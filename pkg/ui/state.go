@@ -4,8 +4,6 @@
 package ui
 
 import (
-	"path/filepath"
-
 	"github.com/miu200521358/mlib_go/pkg/adapter/io_common"
 	"github.com/miu200521358/mlib_go/pkg/adapter/io_model"
 	"github.com/miu200521358/mlib_go/pkg/adapter/io_motion"
@@ -14,7 +12,6 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
 	"github.com/miu200521358/mlib_go/pkg/infra/controller"
 	"github.com/miu200521358/mlib_go/pkg/infra/controller/widget"
-	"github.com/miu200521358/mlib_go/pkg/infra/file/mfile"
 	"github.com/miu200521358/mlib_go/pkg/shared/base/config"
 	"github.com/miu200521358/mlib_go/pkg/shared/base/i18n"
 	"github.com/miu200521358/mlib_go/pkg/shared/base/logging"
@@ -237,41 +234,26 @@ func (s *motionViewerState) saveSafeMotion() {
 	if s.vmdRepo == nil {
 		s.vmdRepo = vmd.NewVmdRepository()
 	}
-	basePath := s.motionData.Path()
-	if basePath == "" {
-		basePath = s.motionPath
+	result, err := usecase.SaveSafeMotion(usecase.SafeMotionSaveRequest{
+		Motion:       s.motionData,
+		FallbackPath: s.motionPath,
+		Writer:       s.vmdRepo,
+	})
+	basePath := ""
+	safePath := ""
+	if result != nil {
+		basePath = result.BasePath
+		safePath = result.SafePath
 	}
-	if basePath == "" {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
-		controller.Beep()
-		return
-	}
-
-	safeMotion, err := usecase.BuildSafeMotion(s.motionData)
 	if err != nil {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
-		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
-		controller.Beep()
-		return
-	}
-	if safeMotion == nil {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
-		controller.Beep()
-		return
-	}
-
-	safePath := s.buildSafeMotionPath(basePath)
-	if safePath == "" {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
-		controller.Beep()
-		return
-	}
-	if err := s.vmdRepo.Save(safePath, safeMotion, io_common.SaveOptions{}); err != nil {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
 		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, safePath)
+		controller.Beep()
+		return
+	}
+	if basePath == "" || safePath == "" {
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
+		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
@@ -279,19 +261,4 @@ func (s *motionViewerState) saveSafeMotion() {
 	logInfoLine(s.logger, ui_messages_labels.LogSafeSaveSuccess)
 	logInfoLine(s.logger, ui_messages_labels.LogSafeSaveSuccessDetail, safePath)
 	controller.Beep()
-}
-
-// buildSafeMotionPath は保存先パスを生成する。
-func (s *motionViewerState) buildSafeMotionPath(path string) string {
-	if path == "" {
-		return ""
-	}
-	dir, name, ext := mfile.SplitPath(path)
-	if ext == "" {
-		ext = ".vmd"
-	}
-	if name == "" {
-		return filepath.Join(dir, "_safe"+ext)
-	}
-	return filepath.Join(dir, name+"_safe"+ext)
 }
