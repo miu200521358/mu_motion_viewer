@@ -177,35 +177,35 @@ func (s *motionViewerState) updateCheckLists() {
 	result, err := usecase.CheckExists(s.modelData, s.motionData)
 	if err != nil {
 		if s.logger != nil {
-			s.logger.Error(translate(s.translator, "OK/NG判定に失敗しました: %s"), err.Error())
+			s.logger.Error("OK/NG判定に失敗しました: %s", err.Error())
 		}
 		return
 	}
 	if s.okBoneList != nil {
 		if err := s.okBoneList.SetItems(result.OkBones); err != nil {
 			if s.logger != nil {
-				s.logger.Error(translate(s.translator, "OKボーン一覧の更新に失敗しました: %s"), err.Error())
+				s.logger.Error("OKボーン一覧の更新に失敗しました: %s", err.Error())
 			}
 		}
 	}
 	if s.okMorphList != nil {
 		if err := s.okMorphList.SetItems(result.OkMorphs); err != nil {
 			if s.logger != nil {
-				s.logger.Error(translate(s.translator, "OKモーフ一覧の更新に失敗しました: %s"), err.Error())
+				s.logger.Error("OKモーフ一覧の更新に失敗しました: %s", err.Error())
 			}
 		}
 	}
 	if s.ngBoneList != nil {
 		if err := s.ngBoneList.SetItems(result.NgBones); err != nil {
 			if s.logger != nil {
-				s.logger.Error(translate(s.translator, "NGボーン一覧の更新に失敗しました: %s"), err.Error())
+				s.logger.Error("NGボーン一覧の更新に失敗しました: %s", err.Error())
 			}
 		}
 	}
 	if s.ngMorphList != nil {
 		if err := s.ngMorphList.SetItems(result.NgMorphs); err != nil {
 			if s.logger != nil {
-				s.logger.Error(translate(s.translator, "NGモーフ一覧の更新に失敗しました: %s"), err.Error())
+				s.logger.Error("NGモーフ一覧の更新に失敗しました: %s", err.Error())
 			}
 		}
 	}
@@ -219,13 +219,13 @@ func (s *motionViewerState) saveModelSetting() {
 	path := s.modelPath
 	if path == "" || s.modelRepo == nil || !s.modelRepo.CanLoad(path) {
 		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSaveFailure), nil)
-		logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSaveFailureDetail), path))
+		logInfoLine(s.logger, ui_messages_labels.LogSaveFailureDetail, path)
 		controller.Beep()
 		return
 	}
 
-	logInfoLine(s.logger, translate(s.translator, ui_messages_labels.LogSaveSuccess))
-	logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSaveSuccessDetail), path))
+	logInfoLine(s.logger, ui_messages_labels.LogSaveSuccess)
+	logInfoLine(s.logger, ui_messages_labels.LogSaveSuccessDetail, path)
 	controller.Beep()
 }
 
@@ -243,7 +243,7 @@ func (s *motionViewerState) saveSafeMotion() {
 	}
 	if basePath == "" {
 		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSafeSaveFailureDetail), basePath))
+		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
@@ -251,13 +251,13 @@ func (s *motionViewerState) saveSafeMotion() {
 	safeMotion, err := usecase.BuildSafeMotion(s.motionData)
 	if err != nil {
 		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
-		logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSafeSaveFailureDetail), basePath))
+		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
 	if safeMotion == nil {
 		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSafeSaveFailureDetail), basePath))
+		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
@@ -265,19 +265,19 @@ func (s *motionViewerState) saveSafeMotion() {
 	safePath := s.buildSafeMotionPath(basePath)
 	if safePath == "" {
 		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSafeSaveFailureDetail), basePath))
+		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
 	if err := s.vmdRepo.Save(safePath, safeMotion, io_common.SaveOptions{}); err != nil {
 		logErrorWithTitle(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
-		logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSafeSaveFailureDetail), safePath))
+		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, safePath)
 		controller.Beep()
 		return
 	}
 
-	logInfoLine(s.logger, translate(s.translator, ui_messages_labels.LogSafeSaveSuccess))
-	logInfoLine(s.logger, formatPathMessage(translate(s.translator, ui_messages_labels.LogSafeSaveSuccessDetail), safePath))
+	logInfoLine(s.logger, ui_messages_labels.LogSafeSaveSuccess)
+	logInfoLine(s.logger, ui_messages_labels.LogSafeSaveSuccessDetail, safePath)
 	controller.Beep()
 }
 

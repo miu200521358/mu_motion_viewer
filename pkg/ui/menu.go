@@ -17,7 +17,7 @@ func NewMenuItems(translator i18n.II18n, logger logging.ILogger) []declarative.M
 		declarative.Action{
 			Text: translate(translator, ui_messages_labels.HelpUsage),
 			OnTriggered: func() {
-				logInfoLine(logger, translate(translator, ui_messages_labels.HelpUsage))
+				logInfoLine(logger, ui_messages_labels.HelpUsage)
 			},
 		},
 	}

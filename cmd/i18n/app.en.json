@@ -49,7 +49,7 @@
     },
     {
         "id": "保存失敗メッセージ",
-        "translation": "Failed to save model settings.\nPlease check if the correct model path is specified.\n\nModel path: {{.Path}}"
+        "translation": "Failed to save model settings.\nPlease check if the correct model path is specified.\n\nModel path: %s"
     },
     {
         "id": "OKボーン",
@@ -89,7 +89,7 @@
     },
     {
         "id": "保存成功メッセージ",
-        "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: {{.Path}}"
+        "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: %s"
     },
     {
         "id": "IK・外部親なし保存失敗",
@@ -101,7 +101,7 @@
     },
     {
         "id": "IK・外部親なし保存失敗メッセージ",
-        "translation": "Failed to save IK/No External Parent Motion\nPlease check if the correct motion path is specified\n\nMotion path: {{.Path}}"
+        "translation": "Failed to save IK/No External Parent Motion\nPlease check if the correct motion path is specified\n\nMotion path: %s"
     },
     {
         "id": "IK・外部親なし保存成功",
@@ -109,7 +109,7 @@
     },
     {
         "id": "IK・外部親なし保存成功メッセージ",
-        "translation": "Successfully saved IK/No External Parent Motion\nPlease close the window\n\nMotion path: {{.Path}}"
+        "translation": "Successfully saved IK/No External Parent Motion\nPlease close the window\n\nMotion path: %s"
     },
     {
         "id": "IK・外部親なしモーション保存",

@@ -4,8 +4,6 @@
 package ui
 
 import (
-	"strings"
-
 	"github.com/miu200521358/mlib_go/pkg/shared/base/i18n"
 	"github.com/miu200521358/mlib_go/pkg/shared/base/logging"
 )
@@ -18,23 +16,18 @@ func translate(translator i18n.II18n, key string) string {
 	return translator.T(key)
 }
 
-// formatPathMessage はパス用の簡易置換を行う。
-func formatPathMessage(message string, path string) string {
-	return strings.ReplaceAll(message, "{{.Path}}", path)
-}
-
 // logInfoLine は情報ログを1行として出力する。
-func logInfoLine(logger logging.ILogger, message string) {
+func logInfoLine(logger logging.ILogger, message string, params ...any) {
 	if logger == nil {
 		logger = logging.DefaultLogger()
 	}
 	if lineLogger, ok := logger.(interface {
 		InfoLine(msg string, params ...any)
 	}); ok {
-		lineLogger.InfoLine(message)
+		lineLogger.InfoLine(message, params...)
 		return
 	}
-	logger.Info(message)
+	logger.Info(message, params...)
 }
 
 // logErrorWithTitle はタイトル付きのエラーログを出力する。
@@ -43,6 +36,12 @@ func logErrorWithTitle(logger logging.ILogger, title string, err error) {
 		logger = logging.DefaultLogger()
 	}
 	if err == nil {
+		if titled, ok := logger.(interface {
+			ErrorTitle(title string, err error, msg string, params ...any)
+		}); ok {
+			titled.ErrorTitle(title, nil, "")
+			return
+		}
 		logger.Error(title)
 		return
 	}
