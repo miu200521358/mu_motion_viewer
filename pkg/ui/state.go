@@ -96,7 +96,7 @@ func (s *motionViewerState) handleModelPathChanged(cw *controller.ControlWindow,
 	}
 	s.modelPath = path
 
-	modelData, err := usecase.LoadModel(repo, path)
+	result, err := usecase.LoadModelWithValidation(repo, path, nil)
 	if err != nil {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), err)
 		s.modelData = nil
@@ -107,6 +107,10 @@ func (s *motionViewerState) handleModelPathChanged(cw *controller.ControlWindow,
 		return
 	}
 
+	modelData := (*model.PmxModel)(nil)
+	if result != nil {
+		modelData = result.Model
+	}
 	s.modelData = modelData
 	if cw != nil {
 		cw.SetModel(motionViewerWindowIndex, motionViewerModelIndex, modelData)
@@ -128,28 +132,34 @@ func (s *motionViewerState) handleMotionPathChanged(cw *controller.ControlWindow
 	}
 	s.motionPath = path
 
-	motionData, err := usecase.LoadMotion(repo, path)
+	motionResult, err := usecase.LoadMotionWithMeta(repo, path)
 	if err != nil {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), err)
 		s.motionData = nil
 		if cw != nil {
 			cw.SetMotion(motionViewerWindowIndex, motionViewerModelIndex, nil)
 		}
-		s.updatePlayerState(nil)
+		s.updatePlayerStateWithFrame(nil, 0)
 		s.updateCheckLists()
 		return
 	}
 
+	motionData := (*motion.VmdMotion)(nil)
+	maxFrame := motion.Frame(0)
+	if motionResult != nil {
+		motionData = motionResult.Motion
+		maxFrame = motionResult.MaxFrame
+	}
 	s.motionData = motionData
 	if cw != nil {
 		cw.SetMotion(motionViewerWindowIndex, motionViewerModelIndex, motionData)
 	}
-	s.updatePlayerState(motionData)
+	s.updatePlayerStateWithFrame(motionData, maxFrame)
 	s.updateCheckLists()
 }
 
-// updatePlayerState は再生UIを反映する。
-func (s *motionViewerState) updatePlayerState(motionData *motion.VmdMotion) {
+// updatePlayerStateWithFrame は再生UIを反映する。
+func (s *motionViewerState) updatePlayerStateWithFrame(motionData *motion.VmdMotion, maxFrame motion.Frame) {
 	if s == nil || s.player == nil {
 		return
 	}
@@ -158,7 +168,10 @@ func (s *motionViewerState) updatePlayerState(motionData *motion.VmdMotion) {
 		s.player.Reset(0)
 		return
 	}
-	s.player.Reset(motionData.MaxFrame())
+	if maxFrame <= 0 {
+		maxFrame = motionData.MaxFrame()
+	}
+	s.player.Reset(maxFrame)
 	if motionData.IsVpd() {
 		s.player.SetPlaying(false)
 		return
@@ -214,7 +227,7 @@ func (s *motionViewerState) saveModelSetting() {
 		return
 	}
 	path := s.modelPath
-	if path == "" || s.modelRepo == nil || !s.modelRepo.CanLoad(path) {
+	if !usecase.CanLoadPath(s.modelRepo, path) {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSaveFailure), nil)
 		logInfoLine(s.logger, ui_messages_labels.LogSaveFailureDetail, path)
 		controller.Beep()
