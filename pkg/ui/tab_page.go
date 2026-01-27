@@ -40,7 +40,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	state.player = widget.NewMotionPlayer(translator)
 	state.player.SetAudioPlayer(audioPlayer, userConfig)
 
-	state.modelPicker = widget.NewPmxXLoadFilePicker(
+	state.modelPicker = widget.NewPmxPmdXLoadFilePicker(
 		userConfig,
 		translator,
 		"pmx",
