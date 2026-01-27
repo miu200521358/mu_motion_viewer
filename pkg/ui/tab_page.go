@@ -18,7 +18,7 @@ import (
 )
 
 // NewTabPages はmu_motion_viewer用のタブページを生成する。
-func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string) []declarative.TabPage {
+func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer) []declarative.TabPage {
 	var fileTab *walk.TabPage
 
 	var translator i18n.II18n
@@ -38,7 +38,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	state := newMotionViewerState(translator, logger, userConfig)
 
 	state.player = widget.NewMotionPlayer(translator)
-	state.player.SetAudioPlayer(audio_api.NewAudioPlayer(), userConfig)
+	state.player.SetAudioPlayer(audioPlayer, userConfig)
 
 	state.modelPicker = widget.NewPmxXLoadFilePicker(
 		userConfig,
@@ -72,19 +72,19 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	})
 
 	listMinSize := declarative.Size{Width: 220, Height: 80}
-	state.okBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkBoneTip))
+	state.okBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkBoneTip), logger)
 	state.okBoneList.SetMinSize(listMinSize)
 	state.okBoneList.SetStretchFactor(1)
 
-	state.okMorphList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkMorphTip))
+	state.okMorphList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelOkMorphTip), logger)
 	state.okMorphList.SetMinSize(listMinSize)
 	state.okMorphList.SetStretchFactor(1)
 
-	state.ngBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelNgBoneTip))
+	state.ngBoneList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelNgBoneTip), logger)
 	state.ngBoneList.SetMinSize(listMinSize)
 	state.ngBoneList.SetStretchFactor(1)
 
-	state.ngMorphList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelNgMorphTip))
+	state.ngMorphList = NewListBoxWidget(translate(translator, ui_messages_labels.LabelNgMorphTip), logger)
 	state.ngMorphList.SetMinSize(listMinSize)
 	state.ngMorphList.SetStretchFactor(1)
 
@@ -174,8 +174,8 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 }
 
 // NewTabPage はmu_motion_viewer用の単一タブを生成する。
-func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string) declarative.TabPage {
-	return NewTabPages(mWidgets, baseServices, initialMotionPath)[0]
+func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer) declarative.TabPage {
+	return NewTabPages(mWidgets, baseServices, initialMotionPath, audioPlayer)[0]
 }
 
 // buildListBoxColumn はラベル付きのリスト表示を構成する。

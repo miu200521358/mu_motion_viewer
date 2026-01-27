@@ -5,6 +5,7 @@ package ui
 
 import (
 	"github.com/miu200521358/mlib_go/pkg/infra/controller"
+	"github.com/miu200521358/mlib_go/pkg/shared/base/logging"
 	"github.com/miu200521358/walk/pkg/declarative"
 	"github.com/miu200521358/walk/pkg/walk"
 )
@@ -18,11 +19,18 @@ type ListBoxWidget struct {
 	stretchFactor int
 	playing       bool
 	suppressClear bool
+	logger        logging.ILogger
 }
 
 // NewListBoxWidget はListBoxWidgetを生成する。
-func NewListBoxWidget(tooltip string) *ListBoxWidget {
-	return &ListBoxWidget{tooltip: tooltip}
+func NewListBoxWidget(tooltip string, logger logging.ILogger) *ListBoxWidget {
+	if logger == nil {
+		logger = logging.DefaultLogger()
+	}
+	return &ListBoxWidget{
+		tooltip: tooltip,
+		logger:  logger,
+	}
 }
 
 // SetMinSize は最小サイズを設定する。
@@ -88,7 +96,11 @@ func (lb *ListBoxWidget) clearSelection() {
 		return
 	}
 	lb.suppressClear = true
-	_ = lb.listBox.SetCurrentIndex(-1)
+	if err := lb.listBox.SetCurrentIndex(-1); err != nil {
+		if lb.logger != nil {
+			lb.logger.Error("ListBoxの選択解除に失敗しました: %s", err.Error())
+		}
+	}
 	lb.suppressClear = false
 }
 
