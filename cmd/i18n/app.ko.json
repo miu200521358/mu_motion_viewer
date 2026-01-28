@@ -28,6 +28,10 @@
         "translation": "모델 설정 저장"
     },
     {
+        "id": "ファイル",
+        "translation": "파일"
+    },
+    {
         "id": "モデルファイル",
         "translation": "모델 파일"
     },

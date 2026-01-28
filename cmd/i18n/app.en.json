@@ -28,6 +28,10 @@
         "translation": "Save Model Settings"
     },
     {
+        "id": "ファイル",
+        "translation": "File"
+    },
+    {
         "id": "モデルファイル",
         "translation": "Model File"
     },
