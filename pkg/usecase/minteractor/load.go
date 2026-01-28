@@ -8,6 +8,33 @@ import (
 	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/moutput"
 )
 
+// LoadModel はモデルを読み込み、結果を返す。
+func (uc *MotionViewerUsecase) LoadModel(rep moutput.IFileReader, path string) (*ModelLoadResult, error) {
+	repo := rep
+	if repo == nil {
+		repo = uc.modelReader
+	}
+	modelData, err := commonusecase.LoadModel(repo, path)
+	if err != nil {
+		return nil, err
+	}
+	return &ModelLoadResult{Model: modelData}, nil
+}
+
+// LoadMotion はモーションを読み込み、最大フレーム情報を返す。
+func (uc *MotionViewerUsecase) LoadMotion(rep moutput.IFileReader, path string) (*MotionLoadResult, error) {
+	repo := rep
+	if repo == nil {
+		repo = uc.motionReader
+	}
+	return commonusecase.LoadMotionWithMeta(repo, path)
+}
+
+// CanLoadModelPath はモデルの読み込み可否を判定する。
+func (uc *MotionViewerUsecase) CanLoadModelPath(path string) bool {
+	return commonusecase.CanLoadPath(uc.modelReader, path)
+}
+
 // LoadModel はモデルを読み込み、型を検証して返す。
 func LoadModel(rep moutput.IFileReader, path string) (*model.PmxModel, error) {
 	return commonusecase.LoadModel(rep, path)

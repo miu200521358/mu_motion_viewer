@@ -10,6 +10,14 @@ import (
 	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/moutput"
 )
 
+// SaveSafeMotion はIK無効モーションを保存する。
+func (uc *MotionViewerUsecase) SaveSafeMotion(request SafeMotionSaveRequest) (*SafeMotionSaveResult, error) {
+	if request.Writer == nil {
+		request.Writer = uc.motionWriter
+	}
+	return SaveSafeMotion(request)
+}
+
 // SafeMotionSaveRequest は安全モーション保存の入力を表す。
 type SafeMotionSaveRequest struct {
 	Motion       *motion.VmdMotion
@@ -24,7 +32,6 @@ type SafeMotionSaveResult struct {
 	SafePath string
 }
 
-// BuildSafeMotion はIKフレームを空にしたモーションを複製する。
 // SaveSafeMotion は安全モーションを生成して保存する。
 func SaveSafeMotion(request SafeMotionSaveRequest) (*SafeMotionSaveResult, error) {
 	result := &SafeMotionSaveResult{}
