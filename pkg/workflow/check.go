@@ -7,8 +7,6 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/domain/model"
 	"github.com/miu200521358/mlib_go/pkg/domain/model/merrors"
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
-
-	"github.com/miu200521358/mu_motion_viewer/pkg/ok_ng_rules"
 )
 
 // indexedName は表示順の並び替えに使う一時構造体。
@@ -32,7 +30,7 @@ func CheckExists(modelData *model.PmxModel, motionData *motion.VmdMotion) (Check
 		if err != nil {
 			return CheckResult{}, err
 		}
-		if ok && bone != nil && ok_ng_rules.IsExactMatch(name, bone.Name()) {
+		if ok && bone != nil && name == bone.Name() {
 			okBoneEntries = append(okBoneEntries, indexedName{Name: name, Index: bone.Index()})
 			continue
 		}
@@ -47,7 +45,7 @@ func CheckExists(modelData *model.PmxModel, motionData *motion.VmdMotion) (Check
 		if err != nil {
 			return CheckResult{}, err
 		}
-		if ok && morph != nil && ok_ng_rules.IsExactMatch(name, morph.Name()) {
+		if ok && morph != nil && name == morph.Name() {
 			okMorphEntries = append(okMorphEntries, indexedName{Name: name, Index: morph.Index()})
 			continue
 		}
