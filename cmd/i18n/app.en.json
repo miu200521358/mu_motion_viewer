@@ -8,6 +8,10 @@
         "translation": "If you associate the tool with the .vmd or .vpd file extension, you can launch the viewer by double-clicking the file.\nYou can also check for missing standard bones and morphs."
     },
     {
+        "id": "使い方",
+        "translation": "Usage"
+    },
+    {
         "id": "ビューワー",
         "translation": "Viewer"
     },

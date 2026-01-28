@@ -4,7 +4,8 @@ package messages
 
 // メッセージキー一覧。
 const (
-	HelpUsage = "使い方説明"
+	HelpUsageTitle = "使い方"
+	HelpUsage      = "使い方説明"
 
 	LabelFile                = "ファイル"
 	LabelSettingSave         = "設定保存"
