@@ -1,17 +1,12 @@
+// 指示: miu200521358
 package usecase
 
 import (
 	"github.com/miu200521358/mlib_go/pkg/domain/model"
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
 	commonusecase "github.com/miu200521358/mlib_go/pkg/usecase"
-	portio "github.com/miu200521358/mlib_go/pkg/usecase/port/io"
+	portio "github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/io"
 )
-
-// ModelLoadResult はモデル読み込み結果を表す。
-type ModelLoadResult = commonusecase.ModelLoadResult
-
-// MotionLoadResult はモーション読み込み結果を表す。
-type MotionLoadResult = commonusecase.MotionLoadResult
 
 // LoadModel はモデルを読み込み、型を検証して返す。
 func LoadModel(rep portio.IFileReader, path string) (*model.PmxModel, error) {
@@ -23,9 +18,15 @@ func LoadMotion(rep portio.IFileReader, path string) (*motion.VmdMotion, error) 
 	return commonusecase.LoadMotion(rep, path)
 }
 
-// LoadModelWithValidation はモデルを読み込み、必要に応じてテクスチャ検証を行う。
+// LoadModelWithValidation はモデルを読み込み、結果を返す。
+// テクスチャ検証は mu_model_viewer 固有処理のため、ここでは実行しない。
 func LoadModelWithValidation(rep portio.IFileReader, path string, validator portio.ITextureValidator) (*ModelLoadResult, error) {
-	return commonusecase.LoadModelWithValidation(rep, path, validator)
+	_ = validator // テクスチャ検証はmu_model_viewer固有のため、このusecaseでは扱わない。
+	modelData, err := LoadModel(rep, path)
+	if err != nil {
+		return nil, err
+	}
+	return &ModelLoadResult{Model: modelData}, nil
 }
 
 // LoadMotionWithMeta はモーションを読み込み、最大フレームを返す。

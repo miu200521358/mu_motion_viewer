@@ -1,3 +1,4 @@
+// 指示: miu200521358
 package ui_messages_labels
 
 // メッセージキー一覧。

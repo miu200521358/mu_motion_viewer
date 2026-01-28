@@ -1,3 +1,4 @@
+// 指示: miu200521358
 package usecase
 
 import (
@@ -6,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
-	portio "github.com/miu200521358/mlib_go/pkg/usecase/port/io"
+	portio "github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/io"
 
 	"github.com/miu200521358/mu_motion_viewer/pkg/workflow"
 )

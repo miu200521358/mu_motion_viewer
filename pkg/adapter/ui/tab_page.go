@@ -1,6 +1,7 @@
 //go:build windows
 // +build windows
 
+// 指示: miu200521358
 package ui
 
 import (
@@ -15,10 +16,11 @@ import (
 	"github.com/miu200521358/walk/pkg/walk"
 
 	"github.com/miu200521358/mu_motion_viewer/pkg/ui_messages_labels"
+	"github.com/miu200521358/mu_motion_viewer/pkg/usecase"
 )
 
 // NewTabPages はmu_motion_viewer用のタブページを生成する。
-func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer) []declarative.TabPage {
+func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *usecase.MotionViewerUsecase) []declarative.TabPage {
 	var fileTab *walk.TabPage
 
 	var translator i18n.II18n
@@ -35,7 +37,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 		logger = logging.DefaultLogger()
 	}
 
-	state := newMotionViewerState(translator, logger, userConfig)
+	state := newMotionViewerState(translator, logger, userConfig, viewerUsecase)
 
 	state.player = widget.NewMotionPlayer(translator)
 	state.player.SetAudioPlayer(audioPlayer, userConfig)
@@ -174,8 +176,8 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 }
 
 // NewTabPage はmu_motion_viewer用の単一タブを生成する。
-func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer) declarative.TabPage {
-	return NewTabPages(mWidgets, baseServices, initialMotionPath, audioPlayer)[0]
+func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *usecase.MotionViewerUsecase) declarative.TabPage {
+	return NewTabPages(mWidgets, baseServices, initialMotionPath, audioPlayer, viewerUsecase)[0]
 }
 
 // buildListBoxColumn はラベル付きのリスト表示を構成する。

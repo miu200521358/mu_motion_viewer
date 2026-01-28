@@ -1,13 +1,11 @@
 //go:build windows
 // +build windows
 
+// 指示: miu200521358
 package ui
 
 import (
 	"github.com/miu200521358/mlib_go/pkg/adapter/io_common"
-	"github.com/miu200521358/mlib_go/pkg/adapter/io_model"
-	"github.com/miu200521358/mlib_go/pkg/adapter/io_motion"
-	"github.com/miu200521358/mlib_go/pkg/adapter/io_motion/vmd"
 	"github.com/miu200521358/mlib_go/pkg/domain/model"
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
 	"github.com/miu200521358/mlib_go/pkg/infra/controller"
@@ -31,9 +29,7 @@ type motionViewerState struct {
 	logger     logging.ILogger
 	userConfig config.IUserConfig
 
-	modelRepo  io_common.IFileReader
-	motionRepo io_common.IFileReader
-	vmdRepo    io_common.IFileWriter
+	usecase *usecase.MotionViewerUsecase
 
 	player               *widget.MotionPlayer
 	modelPicker          *widget.FilePicker
@@ -52,7 +48,7 @@ type motionViewerState struct {
 }
 
 // newMotionViewerState は画面状態を初期化する。
-func newMotionViewerState(translator i18n.II18n, logger logging.ILogger, userConfig config.IUserConfig) *motionViewerState {
+func newMotionViewerState(translator i18n.II18n, logger logging.ILogger, userConfig config.IUserConfig, viewerUsecase *usecase.MotionViewerUsecase) *motionViewerState {
 	if logger == nil {
 		logger = logging.DefaultLogger()
 	}
@@ -60,9 +56,7 @@ func newMotionViewerState(translator i18n.II18n, logger logging.ILogger, userCon
 		translator: translator,
 		logger:     logger,
 		userConfig: userConfig,
-		modelRepo:  io_model.NewModelRepository(),
-		motionRepo: io_motion.NewVmdVpdRepository(),
-		vmdRepo:    vmd.NewVmdRepository(),
+		usecase:    viewerUsecase,
 	}
 }
 
@@ -87,16 +81,18 @@ func (s *motionViewerState) handleModelPathChanged(cw *controller.ControlWindow,
 	if s == nil {
 		return
 	}
-	if rep != nil {
-		s.modelRepo = rep
-	}
-	repo := rep
-	if repo == nil {
-		repo = s.modelRepo
-	}
 	s.modelPath = path
 
-	result, err := usecase.LoadModelWithValidation(repo, path, nil)
+	if s.usecase == nil {
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), nil)
+		s.modelData = nil
+		if cw != nil {
+			cw.SetModel(motionViewerWindowIndex, motionViewerModelIndex, nil)
+		}
+		s.updateCheckLists()
+		return
+	}
+	result, err := s.usecase.LoadModel(rep, path)
 	if err != nil {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), err)
 		s.modelData = nil
@@ -123,16 +119,19 @@ func (s *motionViewerState) handleMotionPathChanged(cw *controller.ControlWindow
 	if s == nil {
 		return
 	}
-	if rep != nil {
-		s.motionRepo = rep
-	}
-	repo := rep
-	if repo == nil {
-		repo = s.motionRepo
-	}
 	s.motionPath = path
 
-	motionResult, err := usecase.LoadMotionWithMeta(repo, path)
+	if s.usecase == nil {
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), nil)
+		s.motionData = nil
+		if cw != nil {
+			cw.SetMotion(motionViewerWindowIndex, motionViewerModelIndex, nil)
+		}
+		s.updatePlayerStateWithFrame(nil, 0)
+		s.updateCheckLists()
+		return
+	}
+	motionResult, err := s.usecase.LoadMotion(rep, path)
 	if err != nil {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, "読み込み失敗"), err)
 		s.motionData = nil
@@ -227,7 +226,7 @@ func (s *motionViewerState) saveModelSetting() {
 		return
 	}
 	path := s.modelPath
-	if !usecase.CanLoadPath(s.modelRepo, path) {
+	if s.usecase == nil || !s.usecase.CanLoadModelPath(path) {
 		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSaveFailure), nil)
 		logInfoLine(s.logger, ui_messages_labels.LogSaveFailureDetail, path)
 		controller.Beep()
@@ -244,13 +243,14 @@ func (s *motionViewerState) saveSafeMotion() {
 	if s == nil || s.motionData == nil {
 		return
 	}
-	if s.vmdRepo == nil {
-		s.vmdRepo = vmd.NewVmdRepository()
+	if s.usecase == nil {
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
+		controller.Beep()
+		return
 	}
-	result, err := usecase.SaveSafeMotion(usecase.SafeMotionSaveRequest{
+	result, err := s.usecase.SaveSafeMotion(usecase.SafeMotionSaveRequest{
 		Motion:       s.motionData,
 		FallbackPath: s.motionPath,
-		Writer:       s.vmdRepo,
 	})
 	basePath := ""
 	safePath := ""

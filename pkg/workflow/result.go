@@ -1,3 +1,4 @@
+// 指示: miu200521358
 package workflow
 
 // CheckResult はOK/NG判定の結果一覧を表す。
