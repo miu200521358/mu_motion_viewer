@@ -1,5 +1,5 @@
 // 指示: miu200521358
-package workflow
+package minteractor
 
 import "github.com/miu200521358/mlib_go/pkg/domain/motion"
 

@@ -1,11 +1,11 @@
 // 指示: miu200521358
-package usecase
+package minteractor
 
 import (
 	"github.com/miu200521358/mlib_go/pkg/domain/model"
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
 	commonusecase "github.com/miu200521358/mlib_go/pkg/usecase"
-	portio "github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/io"
+	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/moutput"
 )
 
 // ModelLoadResult はモデル読み込み結果を表す。
@@ -16,16 +16,16 @@ type MotionLoadResult = commonusecase.MotionLoadResult
 
 // MotionViewerUsecaseDeps はモーションビューア用ユースケースの依存を表す。
 type MotionViewerUsecaseDeps struct {
-	ModelReader  portio.IFileReader
-	MotionReader portio.IFileReader
-	MotionWriter portio.IFileWriter
+	ModelReader  moutput.IFileReader
+	MotionReader moutput.IFileReader
+	MotionWriter moutput.IFileWriter
 }
 
 // MotionViewerUsecase はモーションビューアの入出力処理をまとめたユースケースを表す。
 type MotionViewerUsecase struct {
-	modelReader  portio.IFileReader
-	motionReader portio.IFileReader
-	motionWriter portio.IFileWriter
+	modelReader  moutput.IFileReader
+	motionReader moutput.IFileReader
+	motionWriter moutput.IFileWriter
 }
 
 // NewMotionViewerUsecase はモーションビューア用ユースケースを生成する。
@@ -38,7 +38,7 @@ func NewMotionViewerUsecase(deps MotionViewerUsecaseDeps) *MotionViewerUsecase {
 }
 
 // LoadModel はモデルを読み込み、結果を返す。
-func (uc *MotionViewerUsecase) LoadModel(rep portio.IFileReader, path string) (*ModelLoadResult, error) {
+func (uc *MotionViewerUsecase) LoadModel(rep moutput.IFileReader, path string) (*ModelLoadResult, error) {
 	repo := rep
 	if repo == nil {
 		repo = uc.modelReader
@@ -51,7 +51,7 @@ func (uc *MotionViewerUsecase) LoadModel(rep portio.IFileReader, path string) (*
 }
 
 // LoadMotion はモーションを読み込み、最大フレーム情報を返す。
-func (uc *MotionViewerUsecase) LoadMotion(rep portio.IFileReader, path string) (*MotionLoadResult, error) {
+func (uc *MotionViewerUsecase) LoadMotion(rep moutput.IFileReader, path string) (*MotionLoadResult, error) {
 	repo := rep
 	if repo == nil {
 		repo = uc.motionReader

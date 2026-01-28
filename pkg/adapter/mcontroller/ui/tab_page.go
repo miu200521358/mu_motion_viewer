@@ -15,12 +15,12 @@ import (
 	"github.com/miu200521358/walk/pkg/declarative"
 	"github.com/miu200521358/walk/pkg/walk"
 
-	"github.com/miu200521358/mu_motion_viewer/pkg/ui_messages_labels"
-	"github.com/miu200521358/mu_motion_viewer/pkg/usecase"
+	"github.com/miu200521358/mu_motion_viewer/pkg/adapter/mpresenter/messages"
+	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/minteractor"
 )
 
 // NewTabPages はmu_motion_viewer用のタブページを生成する。
-func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *usecase.MotionViewerUsecase) []declarative.TabPage {
+func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *minteractor.MotionViewerUsecase) []declarative.TabPage {
 	var fileTab *walk.TabPage
 
 	var translator i18n.II18n
@@ -46,47 +46,47 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 		userConfig,
 		translator,
 		config.UserConfigKeyPmxHistory,
-		i18n.TranslateOrMark(translator, ui_messages_labels.LabelModelFile),
-		i18n.TranslateOrMark(translator, ui_messages_labels.LabelModelFileTip),
+		i18n.TranslateOrMark(translator, messages.LabelModelFile),
+		i18n.TranslateOrMark(translator, messages.LabelModelFileTip),
 		state.handleModelPathChanged,
 	)
 	state.motionPicker = widget.NewVmdVpdLoadFilePicker(
 		userConfig,
 		translator,
 		config.UserConfigKeyVmdHistory,
-		i18n.TranslateOrMark(translator, ui_messages_labels.LabelMotionFile),
-		i18n.TranslateOrMark(translator, ui_messages_labels.LabelMotionFileTip),
+		i18n.TranslateOrMark(translator, messages.LabelMotionFile),
+		i18n.TranslateOrMark(translator, messages.LabelMotionFileTip),
 		state.handleMotionPathChanged,
 	)
 
 	state.saveModelButton = widget.NewMPushButton()
-	state.saveModelButton.SetLabel(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSettingSave))
-	state.saveModelButton.SetTooltip(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSettingSave))
+	state.saveModelButton.SetLabel(i18n.TranslateOrMark(translator, messages.LabelSettingSave))
+	state.saveModelButton.SetTooltip(i18n.TranslateOrMark(translator, messages.LabelSettingSave))
 	state.saveModelButton.SetOnClicked(func(_ *controller.ControlWindow) {
 		state.saveModelSetting()
 	})
 
 	state.saveSafeMotionButton = widget.NewMPushButton()
-	state.saveSafeMotionButton.SetLabel(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSafeMotionSave))
-	state.saveSafeMotionButton.SetTooltip(i18n.TranslateOrMark(translator, ui_messages_labels.LabelSafeMotionSave))
+	state.saveSafeMotionButton.SetLabel(i18n.TranslateOrMark(translator, messages.LabelSafeMotionSave))
+	state.saveSafeMotionButton.SetTooltip(i18n.TranslateOrMark(translator, messages.LabelSafeMotionSave))
 	state.saveSafeMotionButton.SetOnClicked(func(_ *controller.ControlWindow) {
 		state.saveSafeMotion()
 	})
 
 	listMinSize := declarative.Size{Width: 220, Height: 80}
-	state.okBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkBoneTip), logger)
+	state.okBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelOkBoneTip), logger)
 	state.okBoneList.SetMinSize(listMinSize)
 	state.okBoneList.SetStretchFactor(1)
 
-	state.okMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkMorphTip), logger)
+	state.okMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelOkMorphTip), logger)
 	state.okMorphList.SetMinSize(listMinSize)
 	state.okMorphList.SetStretchFactor(1)
 
-	state.ngBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgBoneTip), logger)
+	state.ngBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelNgBoneTip), logger)
 	state.ngBoneList.SetMinSize(listMinSize)
 	state.ngBoneList.SetStretchFactor(1)
 
-	state.ngMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgMorphTip), logger)
+	state.ngMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelNgMorphTip), logger)
 	state.ngMorphList.SetMinSize(listMinSize)
 	state.ngMorphList.SetStretchFactor(1)
 
@@ -116,7 +116,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	}
 
 	fileTabPage := declarative.TabPage{
-		Title:    i18n.TranslateOrMark(translator, ui_messages_labels.LabelFile),
+		Title:    i18n.TranslateOrMark(translator, messages.LabelFile),
 		AssignTo: &fileTab,
 		Layout:   declarative.VBox{},
 		Background: declarative.SolidColorBrush{
@@ -137,23 +137,23 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 				},
 				Children: []declarative.Widget{
 					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkBone),
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkBoneTip),
+						i18n.TranslateOrMark(translator, messages.LabelOkBone),
+						i18n.TranslateOrMark(translator, messages.LabelOkBoneTip),
 						state.okBoneList,
 					),
 					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkMorph),
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelOkMorphTip),
+						i18n.TranslateOrMark(translator, messages.LabelOkMorph),
+						i18n.TranslateOrMark(translator, messages.LabelOkMorphTip),
 						state.okMorphList,
 					),
 					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgBone),
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgBoneTip),
+						i18n.TranslateOrMark(translator, messages.LabelNgBone),
+						i18n.TranslateOrMark(translator, messages.LabelNgBoneTip),
 						state.ngBoneList,
 					),
 					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgMorph),
-						i18n.TranslateOrMark(translator, ui_messages_labels.LabelNgMorphTip),
+						i18n.TranslateOrMark(translator, messages.LabelNgMorph),
+						i18n.TranslateOrMark(translator, messages.LabelNgMorphTip),
 						state.ngMorphList,
 					),
 				},
@@ -176,7 +176,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 }
 
 // NewTabPage はmu_motion_viewer用の単一タブを生成する。
-func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *usecase.MotionViewerUsecase) declarative.TabPage {
+func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *minteractor.MotionViewerUsecase) declarative.TabPage {
 	return NewTabPages(mWidgets, baseServices, initialMotionPath, audioPlayer, viewerUsecase)[0]
 }
 

@@ -1,5 +1,6 @@
 // 指示: miu200521358
-package ui_messages_labels
+// Package messages はUI表示に使うメッセージキーを提供する。
+package messages
 
 // メッセージキー一覧。
 const (

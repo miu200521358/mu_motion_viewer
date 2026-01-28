@@ -14,8 +14,8 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/shared/base/i18n"
 	"github.com/miu200521358/mlib_go/pkg/shared/base/logging"
 
-	"github.com/miu200521358/mu_motion_viewer/pkg/ui_messages_labels"
-	"github.com/miu200521358/mu_motion_viewer/pkg/usecase"
+	"github.com/miu200521358/mu_motion_viewer/pkg/adapter/mpresenter/messages"
+	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/minteractor"
 )
 
 const (
@@ -29,7 +29,7 @@ type motionViewerState struct {
 	logger     logging.ILogger
 	userConfig config.IUserConfig
 
-	usecase *usecase.MotionViewerUsecase
+	usecase *minteractor.MotionViewerUsecase
 
 	player               *widget.MotionPlayer
 	modelPicker          *widget.FilePicker
@@ -48,7 +48,7 @@ type motionViewerState struct {
 }
 
 // newMotionViewerState は画面状態を初期化する。
-func newMotionViewerState(translator i18n.II18n, logger logging.ILogger, userConfig config.IUserConfig, viewerUsecase *usecase.MotionViewerUsecase) *motionViewerState {
+func newMotionViewerState(translator i18n.II18n, logger logging.ILogger, userConfig config.IUserConfig, viewerUsecase *minteractor.MotionViewerUsecase) *motionViewerState {
 	if logger == nil {
 		logger = logging.DefaultLogger()
 	}
@@ -183,7 +183,7 @@ func (s *motionViewerState) updateCheckLists() {
 	if s == nil {
 		return
 	}
-	result, err := usecase.CheckExists(s.modelData, s.motionData)
+	result, err := minteractor.CheckExists(s.modelData, s.motionData)
 	if err != nil {
 		if s.logger != nil {
 			s.logger.Error("OK/NG判定に失敗しました: %s", err.Error())
@@ -227,14 +227,14 @@ func (s *motionViewerState) saveModelSetting() {
 	}
 	path := s.modelPath
 	if s.usecase == nil || !s.usecase.CanLoadModelPath(path) {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSaveFailure), nil)
-		logInfoLine(s.logger, ui_messages_labels.LogSaveFailureDetail, path)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, messages.LogSaveFailure), nil)
+		logInfoLine(s.logger, messages.LogSaveFailureDetail, path)
 		controller.Beep()
 		return
 	}
 
-	logInfoLine(s.logger, ui_messages_labels.LogSaveSuccess)
-	logInfoLine(s.logger, ui_messages_labels.LogSaveSuccessDetail, path)
+	logInfoLine(s.logger, messages.LogSaveSuccess)
+	logInfoLine(s.logger, messages.LogSaveSuccessDetail, path)
 	controller.Beep()
 }
 
@@ -244,11 +244,11 @@ func (s *motionViewerState) saveSafeMotion() {
 		return
 	}
 	if s.usecase == nil {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, messages.LogSafeSaveFailure), nil)
 		controller.Beep()
 		return
 	}
-	result, err := s.usecase.SaveSafeMotion(usecase.SafeMotionSaveRequest{
+	result, err := s.usecase.SaveSafeMotion(minteractor.SafeMotionSaveRequest{
 		Motion:       s.motionData,
 		FallbackPath: s.motionPath,
 	})
@@ -259,19 +259,19 @@ func (s *motionViewerState) saveSafeMotion() {
 		safePath = result.SafePath
 	}
 	if err != nil {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), err)
-		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, safePath)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, messages.LogSafeSaveFailure), err)
+		logInfoLine(s.logger, messages.LogSafeSaveFailureDetail, safePath)
 		controller.Beep()
 		return
 	}
 	if basePath == "" || safePath == "" {
-		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, ui_messages_labels.LogSafeSaveFailure), nil)
-		logInfoLine(s.logger, ui_messages_labels.LogSafeSaveFailureDetail, basePath)
+		logErrorWithTitle(s.logger, i18n.TranslateOrMark(s.translator, messages.LogSafeSaveFailure), nil)
+		logInfoLine(s.logger, messages.LogSafeSaveFailureDetail, basePath)
 		controller.Beep()
 		return
 	}
 
-	logInfoLine(s.logger, ui_messages_labels.LogSafeSaveSuccess)
-	logInfoLine(s.logger, ui_messages_labels.LogSafeSaveSuccessDetail, safePath)
+	logInfoLine(s.logger, messages.LogSafeSaveSuccess)
+	logInfoLine(s.logger, messages.LogSafeSaveSuccessDetail, safePath)
 	controller.Beep()
 }

@@ -1,5 +1,5 @@
 // 指示: miu200521358
-package workflow
+package minteractor
 
 // CheckResult はOK/NG判定の結果一覧を表す。
 type CheckResult struct {

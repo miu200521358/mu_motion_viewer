@@ -1,5 +1,5 @@
 // 指示: miu200521358
-package usecase
+package minteractor
 
 import (
 	"fmt"
@@ -7,17 +7,15 @@ import (
 	"strings"
 
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
-	portio "github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/io"
-
-	"github.com/miu200521358/mu_motion_viewer/pkg/workflow"
+	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/moutput"
 )
 
 // SafeMotionSaveRequest は安全モーション保存の入力を表す。
 type SafeMotionSaveRequest struct {
 	Motion       *motion.VmdMotion
 	FallbackPath string
-	Writer       portio.IFileWriter
-	SaveOptions  portio.SaveOptions
+	Writer       moutput.IFileWriter
+	SaveOptions  moutput.SaveOptions
 }
 
 // SafeMotionSaveResult は安全モーション保存の結果を表す。
@@ -27,10 +25,6 @@ type SafeMotionSaveResult struct {
 }
 
 // BuildSafeMotion はIKフレームを空にしたモーションを複製する。
-func BuildSafeMotion(source *motion.VmdMotion) (*motion.VmdMotion, error) {
-	return workflow.BuildSafeMotion(source)
-}
-
 // SaveSafeMotion は安全モーションを生成して保存する。
 func SaveSafeMotion(request SafeMotionSaveRequest) (*SafeMotionSaveResult, error) {
 	result := &SafeMotionSaveResult{}
