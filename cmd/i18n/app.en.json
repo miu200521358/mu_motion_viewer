@@ -5,7 +5,7 @@
     },
     {
         "id": "使い方説明",
-        "translation": "If you associate the tool with the .vmd or .vpd file extension, you can launch the viewer by double-clicking the file.\nYou can also check for missing standard bones and morphs."
+        "translation": "If you associate the tool with .vmd or .vpd extensions, you can launch it by double-clicking the file.\nYou can check missing standard bones and morphs by comparing with a PMX/PMD model."
     },
     {
         "id": "使い方",
@@ -28,6 +28,10 @@
         "translation": "Save Model Settings"
     },
     {
+        "id": "設定保存説明",
+        "translation": "Validates the model file path and shows the result in the message area.\nNo settings are saved; only a beep is played."
+    },
+    {
         "id": "ファイル",
         "translation": "File"
     },
@@ -37,7 +41,7 @@
     },
     {
         "id": "モデルファイルを選択してください",
-        "translation": "Please select a model file. Pmx or X files can be opened.\n・You can set the Pmx model to be applied when opening a motion.\n・Click the save button to save the model path and close the window."
+        "translation": "Please select a model file. Pmx or Pmd files can be opened.\n・You can set the Pmx/Pmd model to be applied when opening a motion.\n・Click the save button to save the model path and close the window."
     },
     {
         "id": "モーションファイル",
@@ -122,6 +126,10 @@
     {
         "id": "IK・外部親なしモーション保存",
         "translation": "Save IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なしモーション保存説明",
+        "translation": "Saves a motion with IK and external parent keyframes removed as _safe.\nVisibility on/off is preserved."
     },
     {
         "id": "OK/NG判定に失敗しました: %s",

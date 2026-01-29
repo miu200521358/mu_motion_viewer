@@ -17,5 +17,13 @@ import (
 func NewMenuItems(translator i18n.II18n, logger logging.ILogger) []declarative.MenuItem {
 	return controller.BuildMenuItemsWithMessages(translator, logger, []controller.MenuMessageItem{
 		{TitleKey: messages.HelpUsageTitle, MessageKey: messages.HelpUsage},
+		{TitleKey: messages.LabelModelFile, MessageKey: messages.LabelModelFileTip},
+		{TitleKey: messages.LabelMotionFile, MessageKey: messages.LabelMotionFileTip},
+		{TitleKey: messages.LabelOkBone, MessageKey: messages.LabelOkBoneTip},
+		{TitleKey: messages.LabelOkMorph, MessageKey: messages.LabelOkMorphTip},
+		{TitleKey: messages.LabelNgBone, MessageKey: messages.LabelNgBoneTip},
+		{TitleKey: messages.LabelNgMorph, MessageKey: messages.LabelNgMorphTip},
+		{TitleKey: messages.LabelSettingSave, MessageKey: messages.HelpSettingSave},
+		{TitleKey: messages.LabelSafeMotionSave, MessageKey: messages.HelpSafeMotionSave},
 	})
 }

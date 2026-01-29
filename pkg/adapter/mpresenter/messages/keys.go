@@ -9,7 +9,9 @@ const (
 
 	LabelFile                = "ファイル"
 	LabelSettingSave         = "設定保存"
+	HelpSettingSave          = "設定保存説明"
 	LabelSafeMotionSave      = "IK・外部親なしモーション保存"
+	HelpSafeMotionSave       = "IK・外部親なしモーション保存説明"
 	LabelModelFile           = "モデルファイル"
 	LabelModelFileTip        = "モデルファイルを選択してください"
 	LabelMotionFile          = "モーションファイル"
