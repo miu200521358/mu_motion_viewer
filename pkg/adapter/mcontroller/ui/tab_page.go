@@ -15,12 +15,16 @@ import (
 	"github.com/miu200521358/walk/pkg/declarative"
 	"github.com/miu200521358/walk/pkg/walk"
 
-	"github.com/miu200521358/mu_motion_viewer/pkg/adapter/mpresenter/messages"
-	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/minteractor"
+	"github.com/miu200521358/mu_tree_viewer/pkg/adapter/mpresenter/messages"
+	"github.com/miu200521358/mu_tree_viewer/pkg/usecase/minteractor"
 )
 
-// NewTabPages はmu_motion_viewer用のタブページを生成する。
-func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *minteractor.MotionViewerUsecase) []declarative.TabPage {
+const (
+	treeViewFixedHeight = 200
+)
+
+// NewTabPages はmu_tree_viewer用のタブページを生成する。
+func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *minteractor.TreeViewerUsecase) []declarative.TabPage {
 	var fileTab *walk.TabPage
 
 	var translator i18n.II18n
@@ -36,71 +40,43 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 	if logger == nil {
 		logger = logging.DefaultLogger()
 	}
+	if viewerUsecase == nil {
+		viewerUsecase = minteractor.NewTreeViewerUsecase(minteractor.TreeViewerUsecaseDeps{})
+	}
 
-	state := newMotionViewerState(translator, logger, userConfig, viewerUsecase)
+	state := newTreeViewerState(translator, logger, userConfig, viewerUsecase)
 
 	state.player = widget.NewMotionPlayer(translator)
 	state.player.SetAudioPlayer(audioPlayer, userConfig)
 
-	state.modelPicker = widget.NewPmxPmdLoadFilePicker(
+	state.folderPicker = NewFolderPicker(
 		userConfig,
 		translator,
-		config.UserConfigKeyPmxHistory,
-		i18n.TranslateOrMark(translator, messages.LabelModelFile),
-		i18n.TranslateOrMark(translator, messages.LabelModelFileTip),
-		state.handleModelPathChanged,
+		folderHistoryKey,
+		i18n.TranslateOrMark(translator, messages.LabelFolderPath),
+		i18n.TranslateOrMark(translator, messages.LabelFolderPathTip),
+		state.handleFolderPathsChanged,
 	)
+
 	state.motionPicker = widget.NewVmdVpdLoadFilePicker(
 		userConfig,
 		translator,
 		config.UserConfigKeyVmdHistory,
-		i18n.TranslateOrMark(translator, messages.LabelMotionFile),
-		i18n.TranslateOrMark(translator, messages.LabelMotionFileTip),
+		i18n.TranslateOrMark(translator, messages.LabelMotionPath),
+		i18n.TranslateOrMark(translator, messages.LabelMotionPathTip),
 		state.handleMotionPathChanged,
 	)
 
-	state.saveModelButton = widget.NewMPushButton()
-	state.saveModelButton.SetLabel(i18n.TranslateOrMark(translator, messages.LabelSettingSave))
-	state.saveModelButton.SetTooltip(i18n.TranslateOrMark(translator, messages.LabelSettingSave))
-	state.saveModelButton.SetOnClicked(func(_ *controller.ControlWindow) {
-		state.saveModelSetting()
-	})
-
-	state.saveSafeMotionButton = widget.NewMPushButton()
-	state.saveSafeMotionButton.SetLabel(i18n.TranslateOrMark(translator, messages.LabelSafeMotionSave))
-	state.saveSafeMotionButton.SetTooltip(i18n.TranslateOrMark(translator, messages.LabelSafeMotionSave))
-	state.saveSafeMotionButton.SetOnClicked(func(_ *controller.ControlWindow) {
-		state.saveSafeMotion()
-	})
-
-	listMinSize := declarative.Size{Width: 220, Height: 80}
-	state.okBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelOkBoneTip), logger)
-	state.okBoneList.SetMinSize(listMinSize)
-	state.okBoneList.SetStretchFactor(1)
-
-	state.okMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelOkMorphTip), logger)
-	state.okMorphList.SetMinSize(listMinSize)
-	state.okMorphList.SetStretchFactor(1)
-
-	state.ngBoneList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelNgBoneTip), logger)
-	state.ngBoneList.SetMinSize(listMinSize)
-	state.ngBoneList.SetStretchFactor(1)
-
-	state.ngMorphList = NewListBoxWidget(i18n.TranslateOrMark(translator, messages.LabelNgMorphTip), logger)
-	state.ngMorphList.SetMinSize(listMinSize)
-	state.ngMorphList.SetStretchFactor(1)
+	state.treeView = NewTreeViewWidget(translator, logger, state.handleTreeFileSelected, state.handleCopyPath)
+	state.treeView.SetMinSize(declarative.Size{Width: 400, Height: treeViewFixedHeight})
+	state.treeView.SetStretchFactor(1)
 
 	if mWidgets != nil {
 		mWidgets.Widgets = append(mWidgets.Widgets,
-			state.player,
-			state.modelPicker,
+			state.folderPicker,
 			state.motionPicker,
-			state.saveModelButton,
-			state.saveSafeMotionButton,
-			state.okBoneList,
-			state.okMorphList,
-			state.ngBoneList,
-			state.ngMorphList,
+			state.treeView,
+			state.player,
 		)
 		mWidgets.SetOnLoaded(func() {
 			if mWidgets == nil || mWidgets.Window() == nil {
@@ -111,6 +87,7 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 					w.SetEnabledInPlaying(playing)
 				}
 			})
+			state.attachDropFiles(mWidgets.Window())
 			state.applyInitialPaths(initialMotionPath)
 		})
 	}
@@ -126,74 +103,27 @@ func NewTabPages(mWidgets *controller.MWidgets, baseServices base.IBaseServices,
 			declarative.Composite{
 				Layout: declarative.VBox{},
 				Children: []declarative.Widget{
-					state.modelPicker.Widgets(),
+					state.folderPicker.Widgets(),
 					state.motionPicker.Widgets(),
+					declarative.VSeparator{},
+					declarative.Composite{
+						Layout: declarative.VBox{},
+						Children: []declarative.Widget{
+							declarative.TextLabel{Text: i18n.TranslateOrMark(translator, messages.LabelTreeView)},
+							state.treeView.Widgets(),
+						},
+					},
+					declarative.VSeparator{},
+					state.player.Widgets(),
 				},
 			},
-			declarative.VSeparator{},
-			declarative.Composite{
-				Layout: declarative.Grid{
-					Columns: 2,
-				},
-				Children: []declarative.Widget{
-					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, messages.LabelOkBone),
-						i18n.TranslateOrMark(translator, messages.LabelOkBoneTip),
-						state.okBoneList,
-					),
-					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, messages.LabelOkMorph),
-						i18n.TranslateOrMark(translator, messages.LabelOkMorphTip),
-						state.okMorphList,
-					),
-					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, messages.LabelNgBone),
-						i18n.TranslateOrMark(translator, messages.LabelNgBoneTip),
-						state.ngBoneList,
-					),
-					buildListBoxColumn(
-						i18n.TranslateOrMark(translator, messages.LabelNgMorph),
-						i18n.TranslateOrMark(translator, messages.LabelNgMorphTip),
-						state.ngMorphList,
-					),
-				},
-			},
-			declarative.VSeparator{},
-			declarative.Composite{
-				Layout: declarative.HBox{},
-				Children: []declarative.Widget{
-					state.saveModelButton.Widgets(),
-					state.saveSafeMotionButton.Widgets(),
-				},
-			},
-			declarative.VSeparator{},
-			state.player.Widgets(),
-			declarative.VSpacer{},
 		},
 	}
 
 	return []declarative.TabPage{fileTabPage}
 }
 
-// NewTabPage はmu_motion_viewer用の単一タブを生成する。
-func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *minteractor.MotionViewerUsecase) declarative.TabPage {
+// NewTabPage はmu_tree_viewer用の単一タブを生成する。
+func NewTabPage(mWidgets *controller.MWidgets, baseServices base.IBaseServices, initialMotionPath string, audioPlayer audio_api.IAudioPlayer, viewerUsecase *minteractor.TreeViewerUsecase) declarative.TabPage {
 	return NewTabPages(mWidgets, baseServices, initialMotionPath, audioPlayer, viewerUsecase)[0]
-}
-
-// buildListBoxColumn はラベル付きのリスト表示を構成する。
-func buildListBoxColumn(label string, tooltip string, listBox *ListBoxWidget) declarative.Composite {
-	return declarative.Composite{
-		Layout: declarative.VBox{
-			MarginsZero: true,
-			SpacingZero: true,
-		},
-		StretchFactor: 1,
-		Children: []declarative.Widget{
-			declarative.TextLabel{
-				Text:        label,
-				ToolTipText: tooltip,
-			},
-			listBox.Widgets(),
-		},
-	}
 }

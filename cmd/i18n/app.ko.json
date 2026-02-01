@@ -150,5 +150,61 @@
     {
         "id": "NGモーフ一覧の更新に失敗しました: %s",
         "translation": "NG 모프 목록 업데이트에 실패했습니다: %s"
+    },
+    {
+        "id": "フォルダパス",
+        "translation": "Folder Path"
+    },
+    {
+        "id": "フォルダパス説明",
+        "translation": "Select a target folder"
+    },
+    {
+        "id": "モーションパス",
+        "translation": "Motion Path"
+    },
+    {
+        "id": "モーションパス説明",
+        "translation": "Select a motion file"
+    },
+    {
+        "id": "ツリービュー",
+        "translation": "Tree View"
+    },
+    {
+        "id": "ツリービュー説明",
+        "translation": "Show model files in a tree"
+    },
+    {
+        "id": "パスコピー",
+        "translation": "Copy Path"
+    },
+    {
+        "id": "パスコピー説明",
+        "translation": "Copy the path to clipboard"
+    },
+    {
+        "id": "読み込み失敗",
+        "translation": "Load failed"
+    },
+    {
+        "id": "読み込み終了しました",
+        "translation": "Load completed"
+    },
+    {
+        "id": "パスをコピーしました",
+        "translation": "Path copied"
+    },
+    {
+        "id": "パスコピーに失敗しました",
+        "translation": "Failed to copy path"
+    },
+    {
+        "id": "ツリー構築に失敗しました",
+        "translation": "Failed to build tree"
+    },
+    {
+        "id": "対象モデルが見つかりません",
+        "translation": "No model files found"
     }
 ]
