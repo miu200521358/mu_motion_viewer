@@ -5,7 +5,11 @@
     },
     {
         "id": "使い方説明",
-        "translation": "如果将工具与 .vmd 或 .vpd 文件扩展名关联，双击文件即可启动查看器。\n您还可以检查缺少的标准骨骼和变形。"
+        "translation": "将工具与 vmd/vpd 扩展名关联后，双击文件即可启动查看器。\n可与 PMX/PMD 模型对照检查缺少的标准骨骼/变形。"
+    },
+    {
+        "id": "使い方",
+        "translation": "使用方法"
     },
     {
         "id": "ビューワー",
@@ -24,12 +28,20 @@
         "translation": "保存模型设置"
     },
     {
+        "id": "設定保存説明",
+        "translation": "检查模型文件路径是否有效，并在消息栏显示结果。\n不执行保存，仅以提示音通知。"
+    },
+    {
+        "id": "ファイル",
+        "translation": "文件"
+    },
+    {
         "id": "モデルファイル",
         "translation": "模型文件"
     },
     {
         "id": "モデルファイルを選択してください",
-        "translation": "请选择模型文件。支持打开 Pmx 或 X 文件。\n・可设置打开动作文件时应用的 Pmx 模型。\n・点击保存按钮可保存模型路径并关闭窗口。"
+        "translation": "请选择模型文件。支持打开 Pmx 或 Pmd 文件。\n・可设置打开动作文件时应用的 Pmx/Pmd 模型。\n・点击保存按钮可保存模型路径并关闭窗口。"
     },
     {
         "id": "モーションファイル",
@@ -49,7 +61,7 @@
     },
     {
         "id": "保存失敗メッセージ",
-        "translation": "模型设置保存失败。\n请检查是否指定了正确的模型路径。\n\n模型路径: {{.Path}}"
+        "translation": "模型设置保存失败。\n请检查是否指定了正确的模型路径。\n\n模型路径: %s"
     },
     {
         "id": "OKボーン",
@@ -89,7 +101,7 @@
     },
     {
         "id": "保存成功メッセージ",
-        "translation": "模型设置保存成功。\n请关闭窗口。\n如果尚未关联文件扩展名，请进行关联。\n\n模型路径: {{.Path}}"
+        "translation": "模型设置保存成功。\n请关闭窗口。\n如果尚未关联文件扩展名，请进行关联。\n\n模型路径: %s"
     },
     {
         "id": "IK・外部親なし保存失敗",
@@ -101,7 +113,7 @@
     },
     {
         "id": "IK・外部親なし保存失敗メッセージ",
-        "translation": "保存 IK/无外部父级 动作失败\n请确认是否指定了正确的动作路径\n\n动作路径: {{.Path}}"
+        "translation": "保存 IK/无外部父级 动作失败\n请确认是否指定了正确的动作路径\n\n动作路径: %s"
     },
     {
         "id": "IK・外部親なし保存成功",
@@ -109,10 +121,90 @@
     },
     {
         "id": "IK・外部親なし保存成功メッセージ",
-        "translation": "保存 IK/无外部父级 动作成功\n请关闭窗口\n\n动作路径: {{.Path}}"
+        "translation": "保存 IK/无外部父级 动作成功\n请关闭窗口\n\n动作路径: %s"
     },
     {
         "id": "IK・外部親なしモーション保存",
         "translation": "保存 IK/无外部父级 动作"
+    },
+    {
+        "id": "IK・外部親なしモーション保存説明",
+        "translation": "将去除IK与外部亲关键帧的动作以 _safe 保存。\n显示/隐藏保持不变。"
+    },
+    {
+        "id": "OK/NG判定に失敗しました: %s",
+        "translation": "OK/NG 判定失败：%s"
+    },
+    {
+        "id": "OKボーン一覧の更新に失敗しました: %s",
+        "translation": "更新 OK 骨骼列表失败：%s"
+    },
+    {
+        "id": "OKモーフ一覧の更新に失敗しました: %s",
+        "translation": "更新 OK 变形列表失败：%s"
+    },
+    {
+        "id": "NGボーン一覧の更新に失敗しました: %s",
+        "translation": "更新 NG 骨骼列表失败：%s"
+    },
+    {
+        "id": "NGモーフ一覧の更新に失敗しました: %s",
+        "translation": "更新 NG 变形列表失败：%s"
+    },
+    {
+        "id": "フォルダパス",
+        "translation": "Folder Path"
+    },
+    {
+        "id": "フォルダパス説明",
+        "translation": "Select a target folder"
+    },
+    {
+        "id": "モーションパス",
+        "translation": "Motion Path"
+    },
+    {
+        "id": "モーションパス説明",
+        "translation": "Select a motion file"
+    },
+    {
+        "id": "ツリービュー",
+        "translation": "Tree View"
+    },
+    {
+        "id": "ツリービュー説明",
+        "translation": "Show model files in a tree"
+    },
+    {
+        "id": "パスコピー",
+        "translation": "Copy Path"
+    },
+    {
+        "id": "パスコピー説明",
+        "translation": "Copy the path to clipboard"
+    },
+    {
+        "id": "読み込み失敗",
+        "translation": "Load failed"
+    },
+    {
+        "id": "読み込み終了しました",
+        "translation": "Load completed"
+    },
+    {
+        "id": "パスをコピーしました",
+        "translation": "Path copied"
+    },
+    {
+        "id": "パスコピーに失敗しました",
+        "translation": "Failed to copy path"
+    },
+    {
+        "id": "ツリー構築に失敗しました",
+        "translation": "Failed to build tree"
+    },
+    {
+        "id": "対象モデルが見つかりません",
+        "translation": "No model files found"
     }
 ]

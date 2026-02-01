@@ -5,7 +5,11 @@
     },
     {
         "id": "使い方説明",
-        "translation": ".vmd 또는 .vpd 파일 확장자를 도구에 연결하면 파일을 더블 클릭하여 뷰어를 실행할 수 있습니다.\n또한 부족한 표준 본 및 모프를 확인할 수 있습니다."
+        "translation": "vmd/vpd 파일 확장자를 도구에 연결하면 파일을 더블 클릭하여 뷰어를 실행할 수 있습니다.\nPMX/PMD 모델과 대조하여 부족한 표준 본/모프를 확인할 수 있습니다."
+    },
+    {
+        "id": "使い方",
+        "translation": "사용법"
     },
     {
         "id": "ビューワー",
@@ -24,12 +28,20 @@
         "translation": "모델 설정 저장"
     },
     {
+        "id": "設定保存説明",
+        "translation": "모델 파일 지정이 유효한지 확인하고 결과를 메시지 영역에 표시합니다.\n저장은 수행하지 않으며 비프로 결과를 알립니다."
+    },
+    {
+        "id": "ファイル",
+        "translation": "파일"
+    },
+    {
         "id": "モデルファイル",
         "translation": "모델 파일"
     },
     {
         "id": "モデルファイルを選択してください",
-        "translation": "모델 파일을 선택하세요. Pmx 또는 X 파일을 열 수 있습니다.\n・모션을 열 때 적용할 Pmx 모델을 설정할 수 있습니다.\n・저장 버튼을 클릭하면 모델 경로가 저장되고 창이 닫힙니다."
+        "translation": "모델 파일을 선택하세요. Pmx 또는 Pmd 파일을 열 수 있습니다.\n・모션을 열 때 적용할 Pmx/Pmd 모델을 설정할 수 있습니다.\n・저장 버튼을 클릭하면 모델 경로가 저장되고 창이 닫힙니다."
     },
     {
         "id": "モーションファイル",
@@ -49,7 +61,7 @@
     },
     {
         "id": "保存失敗メッセージ",
-        "translation": "모델 설정 저장에 실패했습니다.\n올바른 모델 경로가 지정되었는지 확인하세요.\n\n모델 경로: {{.Path}}"
+        "translation": "모델 설정 저장에 실패했습니다.\n올바른 모델 경로가 지정되었는지 확인하세요.\n\n모델 경로: %s"
     },
     {
         "id": "OKボーン",
@@ -89,7 +101,7 @@
     },
     {
         "id": "保存成功メッセージ",
-        "translation": "모델 설정이 성공적으로 저장되었습니다.\n창을 닫아 주세요.\n아직 파일 확장자 연결을 하지 않았다면 설정해 주세요.\n\n모델 경로: {{.Path}}"
+        "translation": "모델 설정이 성공적으로 저장되었습니다.\n창을 닫아 주세요.\n아직 파일 확장자 연결을 하지 않았다면 설정해 주세요.\n\n모델 경로: %s"
     },
     {
         "id": "IK・外部親なし保存失敗",
@@ -101,7 +113,7 @@
     },
     {
         "id": "IK・外部親なし保存失敗メッセージ",
-        "translation": "IK/외부 부모 없음 모션 저장 실패\n올바른 모션 경로가 지정되었는지 확인하세요\n\n모션 경로: {{.Path}}"
+        "translation": "IK/외부 부모 없음 모션 저장 실패\n올바른 모션 경로가 지정되었는지 확인하세요\n\n모션 경로: %s"
     },
     {
         "id": "IK・外部親なし保存成功",
@@ -109,10 +121,90 @@
     },
     {
         "id": "IK・外部親なし保存成功メッセージ",
-        "translation": "IK/외부 부모 없음 모션 저장 성공\n창을 닫아주세요\n\n모션 경로: {{.Path}}"
+        "translation": "IK/외부 부모 없음 모션 저장 성공\n창을 닫아주세요\n\n모션 경로: %s"
     },
     {
         "id": "IK・外部親なしモーション保存",
         "translation": "IK/외부 부모 없음 모션 저장"
+    },
+    {
+        "id": "IK・外部親なしモーション保存説明",
+        "translation": "IK/외부 부모 키프레임을 제외한 모션을 _safe 로 저장합니다.\n표시/비표시는 유지됩니다."
+    },
+    {
+        "id": "OK/NG判定に失敗しました: %s",
+        "translation": "OK/NG 판정에 실패했습니다: %s"
+    },
+    {
+        "id": "OKボーン一覧の更新に失敗しました: %s",
+        "translation": "OK 본 목록 업데이트에 실패했습니다: %s"
+    },
+    {
+        "id": "OKモーフ一覧の更新に失敗しました: %s",
+        "translation": "OK 모프 목록 업데이트에 실패했습니다: %s"
+    },
+    {
+        "id": "NGボーン一覧の更新に失敗しました: %s",
+        "translation": "NG 본 목록 업데이트에 실패했습니다: %s"
+    },
+    {
+        "id": "NGモーフ一覧の更新に失敗しました: %s",
+        "translation": "NG 모프 목록 업데이트에 실패했습니다: %s"
+    },
+    {
+        "id": "フォルダパス",
+        "translation": "Folder Path"
+    },
+    {
+        "id": "フォルダパス説明",
+        "translation": "Select a target folder"
+    },
+    {
+        "id": "モーションパス",
+        "translation": "Motion Path"
+    },
+    {
+        "id": "モーションパス説明",
+        "translation": "Select a motion file"
+    },
+    {
+        "id": "ツリービュー",
+        "translation": "Tree View"
+    },
+    {
+        "id": "ツリービュー説明",
+        "translation": "Show model files in a tree"
+    },
+    {
+        "id": "パスコピー",
+        "translation": "Copy Path"
+    },
+    {
+        "id": "パスコピー説明",
+        "translation": "Copy the path to clipboard"
+    },
+    {
+        "id": "読み込み失敗",
+        "translation": "Load failed"
+    },
+    {
+        "id": "読み込み終了しました",
+        "translation": "Load completed"
+    },
+    {
+        "id": "パスをコピーしました",
+        "translation": "Path copied"
+    },
+    {
+        "id": "パスコピーに失敗しました",
+        "translation": "Failed to copy path"
+    },
+    {
+        "id": "ツリー構築に失敗しました",
+        "translation": "Failed to build tree"
+    },
+    {
+        "id": "対象モデルが見つかりません",
+        "translation": "No model files found"
     }
 ]

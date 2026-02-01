@@ -5,7 +5,11 @@
     },
     {
         "id": "使い方説明",
-        "translation": "If you associate the tool with the .vmd or .vpd file extension, you can launch the viewer by double-clicking the file.\nYou can also check for missing standard bones and morphs."
+        "translation": "If you associate the tool with .vmd or .vpd extensions, you can launch it by double-clicking the file.\nYou can check missing standard bones and morphs by comparing with a PMX/PMD model."
+    },
+    {
+        "id": "使い方",
+        "translation": "Usage"
     },
     {
         "id": "ビューワー",
@@ -24,12 +28,20 @@
         "translation": "Save Model Settings"
     },
     {
+        "id": "設定保存説明",
+        "translation": "Validates the model file path and shows the result in the message area.\nNo settings are saved; only a beep is played."
+    },
+    {
+        "id": "ファイル",
+        "translation": "File"
+    },
+    {
         "id": "モデルファイル",
         "translation": "Model File"
     },
     {
         "id": "モデルファイルを選択してください",
-        "translation": "Please select a model file. Pmx or X files can be opened.\n・You can set the Pmx model to be applied when opening a motion.\n・Click the save button to save the model path and close the window."
+        "translation": "Please select a model file. Pmx or Pmd files can be opened.\n・You can set the Pmx/Pmd model to be applied when opening a motion.\n・Click the save button to save the model path and close the window."
     },
     {
         "id": "モーションファイル",
@@ -49,7 +61,7 @@
     },
     {
         "id": "保存失敗メッセージ",
-        "translation": "Failed to save model settings.\nPlease check if the correct model path is specified.\n\nModel path: {{.Path}}"
+        "translation": "Failed to save model settings.\nPlease check if the correct model path is specified.\n\nModel path: %s"
     },
     {
         "id": "OKボーン",
@@ -89,7 +101,7 @@
     },
     {
         "id": "保存成功メッセージ",
-        "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: {{.Path}}"
+        "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: %s"
     },
     {
         "id": "IK・外部親なし保存失敗",
@@ -101,7 +113,7 @@
     },
     {
         "id": "IK・外部親なし保存失敗メッセージ",
-        "translation": "Failed to save IK/No External Parent Motion\nPlease check if the correct motion path is specified\n\nMotion path: {{.Path}}"
+        "translation": "Failed to save IK/No External Parent Motion\nPlease check if the correct motion path is specified\n\nMotion path: %s"
     },
     {
         "id": "IK・外部親なし保存成功",
@@ -109,10 +121,90 @@
     },
     {
         "id": "IK・外部親なし保存成功メッセージ",
-        "translation": "Successfully saved IK/No External Parent Motion\nPlease close the window\n\nMotion path: {{.Path}}"
+        "translation": "Successfully saved IK/No External Parent Motion\nPlease close the window\n\nMotion path: %s"
     },
     {
         "id": "IK・外部親なしモーション保存",
         "translation": "Save IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なしモーション保存説明",
+        "translation": "Saves a motion with IK and external parent keyframes removed as _safe.\nVisibility on/off is preserved."
+    },
+    {
+        "id": "OK/NG判定に失敗しました: %s",
+        "translation": "Failed to evaluate OK/NG: %s"
+    },
+    {
+        "id": "OKボーン一覧の更新に失敗しました: %s",
+        "translation": "Failed to update OK bone list: %s"
+    },
+    {
+        "id": "OKモーフ一覧の更新に失敗しました: %s",
+        "translation": "Failed to update OK morph list: %s"
+    },
+    {
+        "id": "NGボーン一覧の更新に失敗しました: %s",
+        "translation": "Failed to update NG bone list: %s"
+    },
+    {
+        "id": "NGモーフ一覧の更新に失敗しました: %s",
+        "translation": "Failed to update NG morph list: %s"
+    },
+    {
+        "id": "フォルダパス",
+        "translation": "Folder Path"
+    },
+    {
+        "id": "フォルダパス説明",
+        "translation": "Select a target folder"
+    },
+    {
+        "id": "モーションパス",
+        "translation": "Motion Path"
+    },
+    {
+        "id": "モーションパス説明",
+        "translation": "Select a motion file"
+    },
+    {
+        "id": "ツリービュー",
+        "translation": "Tree View"
+    },
+    {
+        "id": "ツリービュー説明",
+        "translation": "Show model files in a tree"
+    },
+    {
+        "id": "パスコピー",
+        "translation": "Copy Path"
+    },
+    {
+        "id": "パスコピー説明",
+        "translation": "Copy the path to clipboard"
+    },
+    {
+        "id": "読み込み失敗",
+        "translation": "Load failed"
+    },
+    {
+        "id": "読み込み終了しました",
+        "translation": "Load completed"
+    },
+    {
+        "id": "パスをコピーしました",
+        "translation": "Path copied"
+    },
+    {
+        "id": "パスコピーに失敗しました",
+        "translation": "Failed to copy path"
+    },
+    {
+        "id": "ツリー構築に失敗しました",
+        "translation": "Failed to build tree"
+    },
+    {
+        "id": "対象モデルが見つかりません",
+        "translation": "No model files found"
     }
 ]
