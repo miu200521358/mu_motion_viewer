@@ -1,4 +1,4 @@
-# mu_tree_viewer
+# mu_motion_viewer
 
 Source code is licensed under CC-BY-NC-4.0.
 Official binaries distributed by the author may be used commercially

@@ -1,4 +1,4 @@
-module github.com/miu200521358/mu_tree_viewer
+module github.com/miu200521358/mu_motion_viewer
 
 go 1.25.6
 

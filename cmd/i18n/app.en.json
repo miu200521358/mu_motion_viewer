@@ -1,0 +1,142 @@
+[
+    {
+        "id": "&ツールについて",
+        "translation": "&About the Tool"
+    },
+    {
+        "id": "使い方説明",
+        "translation": "If you associate the tool with the .vmd or .vpd file extension, you can launch the viewer by double-clicking the file.\nYou can also check for missing standard bones and morphs."
+    },
+    {
+        "id": "使い方",
+        "translation": "Usage"
+    },
+    {
+        "id": "ビューワー",
+        "translation": "Viewer"
+    },
+    {
+        "id": "設定",
+        "translation": "Settings"
+    },
+    {
+        "id": "設定説明",
+        "translation": "Settings Description"
+    },
+    {
+        "id": "設定保存",
+        "translation": "Save Model Settings"
+    },
+    {
+        "id": "モデルファイル",
+        "translation": "Model File"
+    },
+    {
+        "id": "モデルファイルを選択してください",
+        "translation": "Please select a model file. Pmx or X files can be opened.\n・You can set the Pmx model to be applied when opening a motion.\n・Click the save button to save the model path and close the window."
+    },
+    {
+        "id": "モーションファイル",
+        "translation": "Motion File"
+    },
+    {
+        "id": "モーションファイルを選択してください",
+        "translation": "Please select a motion file.\nVmd or Vpd files can be opened."
+    },
+    {
+        "id": "保存失敗",
+        "translation": "Failed to Save Settings"
+    },
+    {
+        "id": "保存エラーメッセージ",
+        "translation": "Failed to save model settings.\n\nError message: {{.Error}}"
+    },
+    {
+        "id": "保存失敗メッセージ",
+        "translation": "Failed to save model settings.\nPlease check if the correct model path is specified.\n\nModel path: %s"
+    },
+    {
+        "id": "OKボーン",
+        "translation": "[OK] Bone"
+    },
+    {
+        "id": "OKボーン説明",
+        "translation": "Bones that exist in both the motion and the model."
+    },
+    {
+        "id": "OKモーフ",
+        "translation": "[OK] Morph"
+    },
+    {
+        "id": "OKモーフ説明",
+        "translation": "Morphs that exist in both the motion and the model."
+    },
+    {
+        "id": "NGボーン",
+        "translation": "[NG] Bone"
+    },
+    {
+        "id": "NGボーン説明",
+        "translation": "Bones that exist in the motion but not in the model."
+    },
+    {
+        "id": "NGモーフ",
+        "translation": "[NG] Morph"
+    },
+    {
+        "id": "NGモーフ説明",
+        "translation": "Morphs that exist in the motion but not in the model."
+    },
+    {
+        "id": "保存成功",
+        "translation": "Successfully Saved Settings"
+    },
+    {
+        "id": "保存成功メッセージ",
+        "translation": "Model settings have been successfully saved.\nPlease close the window.\nIf you have not yet associated the file extension, please do so.\n\nModel path: %s"
+    },
+    {
+        "id": "IK・外部親なし保存失敗",
+        "translation": "Failed to save IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なし保存エラーメッセージ",
+        "translation": "Failed to save IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なし保存失敗メッセージ",
+        "translation": "Failed to save IK/No External Parent Motion\nPlease check if the correct motion path is specified\n\nMotion path: %s"
+    },
+    {
+        "id": "IK・外部親なし保存成功",
+        "translation": "Successfully saved IK/No External Parent Motion"
+    },
+    {
+        "id": "IK・外部親なし保存成功メッセージ",
+        "translation": "Successfully saved IK/No External Parent Motion\nPlease close the window\n\nMotion path: %s"
+    },
+    {
+        "id": "IK・外部親なしモーション保存",
+        "translation": "Save IK/No External Parent Motion"
+    },
+    {
+        "id": "OK/NG判定に失敗しました: %s",
+        "translation": "Failed to evaluate OK/NG: %s"
+    },
+    {
+        "id": "OKボーン一覧の更新に失敗しました: %s",
+        "translation": "Failed to update OK bone list: %s"
+    },
+    {
+        "id": "OKモーフ一覧の更新に失敗しました: %s",
+        "translation": "Failed to update OK morph list: %s"
+    },
+    {
+        "id": "NGボーン一覧の更新に失敗しました: %s",
+        "translation": "Failed to update NG bone list: %s"
+    },
+    {
+        "id": "NGモーフ一覧の更新に失敗しました: %s",
+        "translation": "Failed to update NG morph list: %s"
+    }
+]
