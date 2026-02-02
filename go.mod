@@ -19,7 +19,7 @@ require (
 	github.com/ftrvxmtrx/tga v0.0.0-20150524081124-bd8e8d5be13a // indirect
 	github.com/go-gl/gl v0.0.0-20231021071112-07e5d0ea2e71 // indirect
 	github.com/miu200521358/dds v0.0.1 // indirect
-	github.com/miu200521358/win v0.0.2 // indirect
+	github.com/miu200521358/win v0.0.2
 	github.com/tiendc/go-deepcopy v1.7.2 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	golang.org/x/text v0.33.0 // indirect
