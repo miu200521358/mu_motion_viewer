@@ -22,7 +22,7 @@ import (
 	"github.com/miu200521358/mlib_go/pkg/infra/app"
 	"github.com/miu200521358/mlib_go/pkg/infra/controller"
 	"github.com/miu200521358/mlib_go/pkg/shared/base"
-	sharedconfig "github.com/miu200521358/mlib_go/pkg/shared/base/config"
+	"github.com/miu200521358/mlib_go/pkg/shared/base/config"
 )
 
 var env string
@@ -50,10 +50,8 @@ func main() {
 		ViewerCount: 1,
 		AppFiles:    appFiles,
 		I18nFiles:   appI18nFiles,
-		AdjustConfig: func(appConfig *sharedconfig.AppConfig) {
-			if env != "" {
-				appConfig.EnvValue = sharedconfig.AppEnv(env)
-			}
+		AdjustConfig: func(appConfig *config.AppConfig) {
+			config.ApplyBuildEnv(appConfig, env)
 		},
 		BuildMenuItems: func(baseServices base.IBaseServices) []declarative.MenuItem {
 			return ui.NewMenuItems(baseServices.I18n(), baseServices.Logger())
