@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
 ----------------------------------------------------------------
 
-  「PmxTranslator」
+  「MuMotionViewer」
 
     ver1.00.00
 
@@ -50,7 +50,7 @@ https://seiga.nicovideo.jp/seiga/im11561839
 ■  Included Files
 ----------------------------------------------------------------
 
-- MuModelViewer_x.xx.xx.exe     …  exe file
+- MuMotionViewer_x.xx.xx.exe    …  exe file
 - Readme.txt                    …  Readme
 - content_tree.txt              …  Content tree set.
 - Community Link - miu's Lab    … Invitation link to miu's Lab Discord server.
@@ -60,7 +60,7 @@ https://seiga.nicovideo.jp/seiga/im11561839
 ■  System Requirements
 ----------------------------------------------------------------
 
-- Windows10/11 64bit
+- Windows11 64bit
   - This tool is intended for use in environments where MMD (MikuMikuDance) is supported.
 
 - Other runtimes, etc., are not required.
@@ -132,7 +132,7 @@ This tool is created using Go, and includes the following libraries:
 The source code is available on GitHub (MIT License).
 However, the copyright is not waived.
 
-https://github.com/miu200521358/mu_model_viewer
+https://github.com/miu200521358/mu_motion_viewer
 
 The icon is borrowed from Human Pictogram 2.0.
 https://pictogram2.com/
@@ -142,7 +142,7 @@ https://pictogram2.com/
 ■  Credit
 ----------------------------------------------------------------
 
-  Tool Name： MuModelViewer
+  Tool Name： MuMotionViewer
   Author：  miu (miu200521358)
 
   http://www.nicovideo.jp/user/2776342

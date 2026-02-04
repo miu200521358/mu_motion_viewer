@@ -1,7 +1,7 @@
 -------------------------------------------------
 -------------------------------------------------
 
-　　MuModelViewer
+　　MuMotionViewer
 
 　　Additional Readme for Beta Version
 
