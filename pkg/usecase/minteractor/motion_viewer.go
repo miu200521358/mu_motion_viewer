@@ -4,15 +4,15 @@ package minteractor
 import (
 	"github.com/miu200521358/mlib_go/pkg/domain/model"
 	"github.com/miu200521358/mlib_go/pkg/domain/motion"
-	commonusecase "github.com/miu200521358/mlib_go/pkg/usecase"
+	"github.com/miu200521358/mlib_go/pkg/usecase"
 	"github.com/miu200521358/mu_motion_viewer/pkg/usecase/port/moutput"
 )
 
 // ModelLoadResult はモデル読み込み結果を表す。
-type ModelLoadResult = commonusecase.ModelLoadResult
+type ModelLoadResult = usecase.ModelLoadResult
 
 // MotionLoadResult はモーション読み込み結果を表す。
-type MotionLoadResult = commonusecase.MotionLoadResult
+type MotionLoadResult = usecase.MotionLoadResult
 
 // MotionViewerUsecaseDeps はモーションビューア用ユースケースの依存を表す。
 type MotionViewerUsecaseDeps struct {
@@ -43,7 +43,7 @@ func (uc *MotionViewerUsecase) LoadModel(rep moutput.IFileReader, path string) (
 	if repo == nil {
 		repo = uc.modelReader
 	}
-	modelData, err := commonusecase.LoadModel(repo, path)
+	modelData, err := usecase.LoadModel(repo, path)
 	if err != nil {
 		return nil, err
 	}
@@ -56,12 +56,12 @@ func (uc *MotionViewerUsecase) LoadMotion(rep moutput.IFileReader, path string) 
 	if repo == nil {
 		repo = uc.motionReader
 	}
-	return commonusecase.LoadMotionWithMeta(repo, path)
+	return usecase.LoadMotionWithMeta(repo, path)
 }
 
 // CanLoadModelPath はモデルの読み込み可否を判定する。
 func (uc *MotionViewerUsecase) CanLoadModelPath(path string) bool {
-	return commonusecase.CanLoadPath(uc.modelReader, path)
+	return usecase.CanLoadPath(uc.modelReader, path)
 }
 
 // SaveSafeMotion はIK無効モーションを保存する。
