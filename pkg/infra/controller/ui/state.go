@@ -233,8 +233,12 @@ func (s *motionViewerState) saveModelSetting() {
 		return
 	}
 
-	logInfoLine(s.logger, messages.LogSaveSuccess)
-	logInfoLine(s.logger, messages.LogSaveSuccessDetail, path)
+	logInfoWithTitle(
+		s.logger,
+		i18n.TranslateOrMark(s.translator, messages.LogSaveSuccess),
+		messages.LogSaveSuccessDetail,
+		path,
+	)
 	controller.Beep()
 }
 
@@ -271,7 +275,11 @@ func (s *motionViewerState) saveSafeMotion() {
 		return
 	}
 
-	logInfoLine(s.logger, messages.LogSafeSaveSuccess)
-	logInfoLine(s.logger, messages.LogSafeSaveSuccessDetail, safePath)
+	logInfoWithTitle(
+		s.logger,
+		i18n.TranslateOrMark(s.translator, messages.LogSafeSaveSuccess),
+		messages.LogSafeSaveSuccessDetail,
+		safePath,
+	)
 	controller.Beep()
 }
